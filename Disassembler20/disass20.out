@@ -1,0 +1,15 @@
+
+C:\Users\Denton\Desktop\disass20 2017 2-14-18\Disass20 tass>64tass disass20.asm -L disass20.lst -o disass20.prg  
+64tass Turbo Assembler Macro V1.53.1515
+64TASS comes with ABSOLUTELY NO WARRANTY; This is free software, and you
+are welcome to redistribute it under certain conditions; See LICENSE!
+
+Assembling file:   disass20.asm
+Error messages:    None
+Warning messages:  None
+Passes:            3
+Memory range:      $1201-$12f1   $00f1
+Memory range:      $13f2-$3137   $1d46
+Memory range:      $3938-$3ae9   $01b2
+
+C:\Users\Denton\Desktop\disass20 2017 2-14-18\Disass20 tass>rem pause 

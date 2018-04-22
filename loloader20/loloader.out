@@ -1,0 +1,15 @@
+
+C:\My Commodore\Commodore Software Development\Commodore VIC 20 MADS Projects\Assembler20\Assembler20 tass\Loader20 tass\loloader tass>64tass loloader.asm -L loloader.lst -o loloader.prg  
+64tass Turbo Assembler Macro V1.53.1515
+64TASS comes with ABSOLUTELY NO WARRANTY; This is free software, and you
+are welcome to redistribute it under certain conditions; See LICENSE!
+
+Assembling file:   loloader.asm
+Assembling file:   loader.asm
+Assembling file:   savobj.asm
+Error messages:    None
+Warning messages:  None
+Passes:            3
+Memory range:      $1201-$15dc   $03dc
+
+C:\My Commodore\Commodore Software Development\Commodore VIC 20 MADS Projects\Assembler20\Assembler20 tass\Loader20 tass\loloader tass>rem pause 
