@@ -1,0 +1,3026 @@
+BPRG2BYTE.ASM......PAGE 0001
+
+LINE# LOC   CODE        LINE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PRG2BYTE......PAGE 0002
+
+LINE# LOC   CODE        LINE
+
+
+00003  0000              ;*********************************
+00004  0000              *=$1201                ;START OF BASIC
+00005  1201              ;*********************************
+00006  1201              ; SET BSTUB TO ONE TO ALLOW FOR
+00007  1201              ; INSERTION OF BASIC STUB CODE
+00008  1201              ;*********************************
+00009  1201              BSTUB  = 1
+00010  1201              ;*********************************
+00011  1201              ;
+00012  1201              ;         PRG2BYTE64
+00013  1201              ;      PRG2BYTE.C64 V072882
+00014  1201              ;     CONVERT PROGRAM FILE
+00015  1201              ;  TO ASSEMBLER64 SOURCE FILE
+00016  1201              ;          BYTE,WORD 
+00017  1201              ;
+00018  1201              ; (C) 1982 BY COMMODORE MACHINES
+00019  1201              ;
+00020  1201              ;  WRITTEN BY DENTON MARLOWE
+00021  1201              ;*********************************
+00022  1201              ;
+00023  1201              ; BASIC FORMAT PROGRAM
+00024  1201              ;
+00025  1201              ; 10 SYS(4623)
+00026  1201              ;
+00027  1201              ;*********************************
+00029  1201              ;.IF  BSTUB == 1
+00030  1201  0D 12              .WORD BASIC     ;LINE LINK POINTER
+00031  1203  0A                 .BYTE $0A,$00   ;LINE NUMBER (10)
+00031  1204  00 
+00032  1205  9E                 .BYTE 158       ;SYS COMMAND TOKEN
+00033  1206  28 34              .BYTE '(4623)'  ;CALL TO $120F
+00034  120C  00                 .BYTE $00       ;END OF LINE
+00035  120D              BASIC
+00036  120D  00                 .BYTE $00,$00   ;END OF BASIC
+00036  120E  00 
+00038  120F              ;.FI
+00039  120F              ;*********************************
+00040  120F              ; VIC20 SPECIFIC EQUATES
+00041  120F              ;*********************************
+00042  120F              BASICW = $C474         ;BASIC WARM START
+00043  120F              CHROUE = $E742         ;OUTPUT CHAR TO SCREEN
+00044  120F              SCROLY = $900F         ;SCREEN CONTROL
+00045  120F              ;*********************************
+00046  120F              ;*=$120F        ;PROGRAM20 ORGIN
+00047  120F              ;*********************************
+00048  120F              ; JUMP OVER 
+00049  120F              ; PROCESSOR SPECIFIC UTILITIES
+00050  120F              ;*********************************
+00051  120F  4C 12 12           JMP START
+00052  1212              ;*********************************
+00053  1212              ; SET FLAG TO ALLOW BASIC
+00054  1212              ; AND KERNAL (ERROR) MESSAGES
+00055  1212              ; $80 FOR BASIC
+00056  1212              ; $40 FOR KERNAL
+00057  1212              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0003
+
+LINE# LOC   CODE        LINE
+
+
+00058  1212              ;
+00059  1212              ;*********************************
+00060  1212              SETMSG=$FF90
+00061  1212              ;*********************************
+00062  1212  A9 40       START  LDA #$40        ;ALLOW KERNAL MESSAGES
+00063  1214  20 90 FF           JSR SETMSG      ;KERNAL FLAG
+00064  1217              ;*********************************
+00065  1217              ; MAIN BODY OF CODE
+00066  1217              ;*********************************
+00067  1217              .FIL   PRG2BYTE.ASM
+00068  1217              ;*********************************
+00069  1217              ;
+00070  1217              ;         PRG2BYTE64
+00071  1217              ;      PRG2BYTE.C64 V072882
+00072  1217              ;     CONVERT PROGRAM FILE
+00073  1217              ;  TO ASSEMBLER64 SOURCE FILE
+00074  1217              ;          BYTE,WORD 
+00075  1217              ;
+00076  1217              ; (C) 1982 BY COMMODORE MACHINES
+00077  1217              ;
+00078  1217              ;  WRITTEN BY DENTON MARLOWE
+00079  1217              ;*********************************
+00080  1217              ; MAIN BODY OF CODE
+00081  1217              ;*********************************
+00082  1217              ; ZEROPAGE USAGE EQUATES
+00083  1217              ;*********************************
+00084  1217              STATUS=$90             ;STATUS BYTE
+00085  1217              LA     =$B8            ;CURRENT LOGICAL DEVICE NU
+MBER
+00086  1217              SA     =$B9            ;CURRENT SECONDARY ADDRESS
+
+00087  1217              FA     =$BA            ;CURRENT DEVICE NUMBER
+00088  1217              ;ZEROPG=$FB        ;ZERO PAGE POINTER
+00089  1217              ZEROUR=$02             ;$FD ZERO PAGE POINTER
+00090  1217              ;*********************************
+00091  1217              ; KERNAL JMUP TABLE EQUATES
+00092  1217              ;*********************************
+00093  1217              TALKSA=$FF96           ;SERIAL TALK SA
+00094  1217              IECIN  =$FFA5          ;SERIAL IN
+00095  1217              UNTALK=$FFAB           ;SERIAL UNTALK
+00096  1217              STOP   =$FFE1          ;CHECK FOR STOP
+00097  1217              TALK   =$FFB4          ;SERIAL TALK
+00098  1217              SETLFS=$FFBA           ;SET LOGICAL FILE
+00099  1217              SETNAM=$FFBD           ;SET FILENAME
+00100  1217              OPEN   =$FFC0          ;OPEN FILE
+00101  1217              CLOSE  =$FFC3          ;CLOSE LOGICAL FILE
+00102  1217              CHKIN  =$FFC6          ;OPEN INPUT CHANNEL
+00103  1217              CHKOUT=$FFC9           ;OPEN OUTPUT CHANNEL
+00104  1217              CLRCHN=$FFCC           ;RESET I/O CHANNELS
+00105  1217              CHRIN  =$FFCF          ;GET KEYBOARD INPUT
+00106  1217              CHROUT=$FFD2           ;OUTPUT CHARACTER
+00107  1217              GETIN  =$FFE4          ;GET KEYBOARD CHAR
+00108  1217              READST=$FFB7           ;READ I/O STATUS
+00109  1217              ;*********************************
+00110  1217              ;
+00111  1217              ; PRG2BYTE ENTRY POINT
+00112  1217              ;
+
+
+
+
+
+
+PRG2BYTE......PAGE 0004
+
+LINE# LOC   CODE        LINE
+
+
+00113  1217              ;*********************************
+00114  1217              PRG2BY =*
+00115  1217  20 CC FF           JSR CLRCHN      ;RSET I/O
+00116  121A  A9 00              LDA #$00        ;ZERO BYTE
+00117  121C  8D A8 15           STA RECORD      ;RECORD COUNT
+00118  121F  8D A9 15           STA RECORD+1    ;
+00119  1222  8D AA 15           STA STADD       ;START ADDRESS
+00120  1225  85 90              STA STATUS      ;I/O STATUS
+00121  1227  8D B2 15           STA SCROPT      ;SCREEN OUTPUT OPTION
+00122  122A  8D BC 16           STA RECHI
+00123  122D  8D BD 16           STA RECLO
+00124  1230  8D C1 16           STA CHKSUM
+00125  1233  8D C2 16           STA CHKSUM+1
+00126  1236              ;*********************************
+00127  1236              ; INIT DISK
+00128  1236              ;*********************************
+00129  1236              INITD  =*
+00130  1236  A9 02              LDA #$02        ;LENGTH OF FILENAME
+00131  1238  A0 16              LDY #>INIT      ;HIGH ADDRESS OF FILENAME
+00132  123A  A2 B0              LDX #<INIT      ;LOW ADDRESS OF FILENAME
+00133  123C  20 BD FF           JSR SETNAM      ;SET FILE NAME
+00134  123F  A9 0F              LDA #$0F        ;FILE #15
+00135  1241  A2 08              LDX #$08        ;DEVICE #8
+00136  1243  A0 0F              LDY #$0F        ;SECONDARY ADDRESS #15 (CM
+D)
+00137  1245  20 BA FF           JSR SETLFS      ;SET FILE PARAMETERS
+00138  1248  20 C0 FF           JSR OPEN        ;OPEN FILE
+00139  124B  A9 0F              LDA #$0F        ;FILE #15
+00140  124D  20 C3 FF           JSR CLOSE       ;CLOSE IT
+00141  1250  20 6E 15           JSR DISERR      ;LOW LEVEL CHECK DISK ERRO
+R
+00142  1253  90 03              BCC INITOK      ;IF C=0 NO ERRORS
+00143  1255  4C 6B 14           JMP QUITER      ;DISK ERROR, QUIT
+00144  1258              ;*********************************
+00145  1258              ; OPEN FILE TO SCREEN
+00146  1258              ;*********************************
+00147  1258              INITOK =*
+00148  1258  A9 03              LDA #$03        ;FILE #3
+00149  125A  A2 03              LDX #$03        ;DEVICE #3
+00150  125C  A0 00              LDY #$00        ;SECOND ADDRESS
+00151  125E  20 BA FF           JSR SETLFS      ;SET FILE
+00152  1261              ;
+00153  1261  A9 00              LDA #$00        ;GET LENGTH
+00154  1263  A2 00              LDX #$00        ;LOW FILENAME
+00155  1265  A0 00              LDY #$00        ;HIGH FILENAME
+00156  1267  20 BD FF           JSR SETNAM      ;SET FILENAME
+00157  126A  20 C0 FF           JSR OPEN        ;OPEN FILE 
+00158  126D  A2 03              LDX #$03        ;FILE #3
+00159  126F  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00160  1272              ;*********************************
+00161  1272              ; PRINT TITLE
+00162  1272              ;*********************************
+00163  1272  A2 14              LDX #MSG7-MSG1  ;OFFSET FOR TITLE
+00164  1274  20 54 17           JSR PRINT       ;PRINT TITLE
+00165  1277              ;*********************************
+00166  1277              ; PROMPT FOR PRG FILENAME
+00167  1277              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0005
+
+LINE# LOC   CODE        LINE
+
+
+00168  1277  A2 69              LDX #MSG9-MSG1  ;OFFSET FOR MSG
+00169  1279  20 54 17           JSR PRINT       ;PRG NAME:
+00170  127C              ;*********************************
+00171  127C              ; READ IN PRG FILE NAME
+00172  127C              ;*********************************
+00173  127C  20 A6 17           JSR INSTNP
+00174  127F              ;*********************************
+00175  127F  A9 00              LDA #$00        ;NULL
+00176  1281  99 9D 16           STA SUF,Y       ;TERMINATE FILENAME
+00177  1284              ;*********************************
+00178  1284              ; APPEND ,P,R
+00179  1284              ;*********************************
+00180  1284  A2 00       PFILE2 LDX #$00
+00181  1286  BD B6 16    PFILE3 LDA PROGM,X
+00182  1289  99 8B 16           STA PUF,Y
+00183  128C  C8                 INY
+00184  128D  E8                 INX
+00185  128E  E0 04              CPX #$04
+00186  1290  D0 F4              BNE PFILE3
+00187  1292  8C BB 16           STY SAVP        ; LENGTH OF FILE NAME
+00188  1295              ;*********************************
+00189  1295              ; OUTPUT CARRAIGE RETURN
+00190  1295              ;*********************************
+00191  1295  20 CF 17           JSR PRTCR       ;PRINT CR
+00192  1298              ;*********************************
+00193  1298              ; PROMPT FOR ASM FILENAME
+00194  1298              ;*********************************
+00195  1298  A2 54              LDX #MSG8-MSG1  ;OFFSET FOR MSG
+00196  129A  20 54 17           JSR PRINT       ;PRG NAME:
+00197  129D              ;*********************************
+00198  129D              ; READ IN SOURCE FILE NAME
+00199  129D              ;*********************************
+00200  129D  20 97 17           JSR INSTNO
+00201  12A0              ;*********************************
+00202  12A0              ; APPEND ,S,W
+00203  12A0              ;*********************************
+00204  12A0  A2 00       PFILE0 LDX #$00
+00205  12A2  BD B2 16    PFILE1 LDA SRCM,X
+00206  12A5  99 79 16           STA OUF,Y
+00207  12A8  C8                 INY
+00208  12A9  E8                 INX
+00209  12AA  E0 04              CPX #$04
+00210  12AC  D0 F4              BNE PFILE1
+00211  12AE  8C BA 16           STY SAVO        ; LENGTH OF FILE NAME
+00212  12B1              ;*********************************
+00213  12B1              ; NEW LINE
+00214  12B1              ;*********************************
+00215  12B1  20 CF 17           JSR PRTCR       ;PRINT CR
+00216  12B4              ;*********************************
+00217  12B4              ; SCREEN OUTPUT OPTION (VERBOSE)
+00218  12B4              ;*********************************
+00219  12B4  A9 34              LDA #<MSS1      ;LOW BYTE MESSAGE
+00220  12B6  A0 17              LDY #>MSS1      ;HIGH BYTE MESSAGE
+00221  12B8  20 6A 17           JSR STRPNT      ;OUTPUT MESSAGE
+00222  12BB  20 88 17           JSR CRNO        ;GET KEY PRESS
+
+
+
+
+
+
+PRG2BYTE......PAGE 0006
+
+LINE# LOC   CODE        LINE
+
+
+00223  12BE  B0 07              BCS SOP1        ;C=0 YES C=1 NO
+00224  12C0  A9 00              LDA #$00        ;ZERO
+00225  12C2  8D B2 15           STA SCROPT      ;PRINT TO SCREEN
+00226  12C5  F0 05              BEQ OPENPF      ;SKIP NEXT
+00227  12C7  A9 01       SOP1   LDA #$01        ;ONE
+00228  12C9  8D B2 15           STA SCROPT      ;NO PRINT TO SCREEN 
+00229  12CC              ;*********************************
+00230  12CC              ; DIRECTIVE FORMAT OPTION
+00231  12CC              ;*********************************
+00232  12CC              OPENPF =*
+00233  12CC              ;*********************************
+00234  12CC              ; OUTPUT CARRAIGE RETURN
+00235  12CC              ;*********************************
+00236  12CC  20 CF 17           JSR PRTCR       ;PRINT CR
+00237  12CF              ;*********************************
+00238  12CF              ; DIRECTIVE FORMAT OPTION
+00239  12CF              ;*********************************
+00240  12CF  A9 30              LDA #'0'
+00241  12D1  8D 39 18           STA DIROPT
+00242  12D4  20 3A 18           JSR IDIROP
+00243  12D7              ;*********************************
+00244  12D7              ; OUTPUT CARRAIGE RETURN
+00245  12D7              ;*********************************
+00246  12D7  20 CF 17           JSR PRTCR       ;PRINT CR
+00247  12DA              ;*********************************
+00248  12DA              ; DIRECTIVE NUMBER DATA ELEMENTS
+00249  12DA              ;*********************************
+00250  12DA  20 B2 18           JSR SETDEF
+00251  12DD  20 9E 18           JSR NOTABS
+00252  12E0              ;*********************************
+00253  12E0              ; OUTPUT CARRAIGE RETURN
+00254  12E0              ;*********************************
+00255  12E0  20 CF 17           JSR PRTCR       ;PRINT CR
+00256  12E3              ;*********************************
+00257  12E3              ; OPEN PROGRAM FILE
+00258  12E3              ;*********************************
+00259  12E3              ;OPENPF =*
+00260  12E3  A9 08              LDA #$08        ;FILE #7
+00261  12E5  A2 08              LDX #$08        ;DEVICE #8
+00262  12E7  A0 08              LDY #$08        ;SECOND ADDRESS
+00263  12E9  20 BA FF           JSR SETLFS      ;SET FILE
+00264  12EC              ;
+00265  12EC  AD BB 16           LDA SAVP        ;GET LENGTH
+00266  12EF  A2 8B              LDX #<PUF       ;LOW FILENAME
+00267  12F1  A0 16              LDY #>PUF       ;HIGH FILENAME
+00268  12F3  20 BD FF           JSR SETNAM      ;SET FILENAME
+00269  12F6  20 C0 FF           JSR OPEN        ;OPEN FILE
+00270  12F9              ;
+00271  12F9  20 6E 15           JSR DISERR
+00272  12FC  90 03              BCC PRGOK
+00273  12FE  4C 6B 14           JMP QUITER
+00274  1301              ;*********************************
+00275  1301              ; OPEN SOURCE FILE
+00276  1301              ;*********************************
+00277  1301              PRGOK  =*
+
+
+
+
+
+
+PRG2BYTE......PAGE 0007
+
+LINE# LOC   CODE        LINE
+
+
+00278  1301  A9 07              LDA #$07        ;FILE #7
+00279  1303  A2 08              LDX #$08        ;DEVICE #8
+00280  1305  A0 07              LDY #$07        ;SECOND ADDRESS
+00281  1307  20 BA FF           JSR SETLFS      ;SET FILE
+00282  130A              ;
+00283  130A  AD BA 16           LDA SAVO        ;GET LENGTH
+00284  130D  A2 79              LDX #<OUF       ;LOW FILENAME
+00285  130F  A0 16              LDY #>OUF       ;HIGH FILENAME
+00286  1311  20 BD FF           JSR SETNAM      ;SET FILENAME
+00287  1314              ;
+00288  1314  20 C0 FF           JSR OPEN        ;OPEN FILE
+00289  1317              ;
+00290  1317  20 6E 15           JSR DISERR
+00291  131A  90 03              BCC SRCOK
+00292  131C  4C 6B 14           JMP QUITER
+00293  131F              ;*********************************
+00294  131F              ; SET INPUT TO PROGRAM FILE
+00295  131F              ;*********************************
+00296  131F              SRCOK  =*
+00297  131F  A2 08              LDX #$08        ;FILE #8
+00298  1321  20 C6 FF           JSR CHKIN       ;INPUT FILE
+00299  1324              ;*********************************
+00300  1324              ; NEW LINE
+00301  1324              ;*********************************
+00302  1324  20 CF 17           JSR PRTCR       ;PRINT CR
+00303  1327              ;*********************************
+00304  1327              ; READ IN START ADDRESS FROM FILE
+00305  1327              ;*********************************
+00306  1327  20 CF FF           JSR CHRIN       ;LOW BYTE START ADDRESS
+00307  132A  8D BF 16           STA ADDLO
+00308  132D  20 CF FF           JSR CHRIN       ;HIGH BYTE START ADDRESS
+00309  1330  8D BE 16           STA ADDHI
+00310  1333              ;*********************************
+00311  1333              ;
+00312  1333              ;*********************************
+00313  1333  AD BF 16           LDA ADDLO
+00314  1336  8D AA 15           STA STADD
+00315  1339  8D AC 15           STA CUADD
+00316  133C  8D AE 15           STA ENADD
+00317  133F                     
+00318  133F  AD BE 16           LDA ADDHI
+00319  1342  8D AB 15           STA STADD+1
+00320  1345  8D AD 15           STA CUADD+1
+00321  1348  8D AF 15           STA ENADD+1
+00322  134B              ;*********************************
+00323  134B              ; PRINT HEADER WITH PRG FILENAME
+00324  134B              ;*********************************
+00325  134B              ; CHECK SCREEN OUTPUT OPTIONS
+00326  134B              ; 0 = NO SCREEN
+00327  134B              ; 1 = SCREEN OUTPUT
+00328  134B              ;*********************************
+00329  134B  AD B2 15           LDA SCROPT
+00330  134E  D0 08              BNE PRTFIL
+00331  1350              ;*********************************
+00332  1350              ; SET OUTPUT CHANNEL TO SCREEN
+
+
+
+
+
+
+PRG2BYTE......PAGE 0008
+
+LINE# LOC   CODE        LINE
+
+
+00333  1350              ;*********************************
+00334  1350  A2 03              LDX #$03        ;FILE #Y
+00335  1352  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00336  1355  20 83 14           JSR PRHEAD      ;PRINT HEADER
+00337  1358              ;*********************************
+00338  1358              ; SET OUTPUT CHANNEL TO ASM FILE
+00339  1358              ;*********************************
+00340  1358  A2 07       PRTFIL LDX #$07        ;FILE #Y
+00341  135A  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00342  135D  20 83 14           JSR PRHEAD      ;PRINT HEADER
+00343  1360              ;*********************************
+00344  1360              ; SET OUTPUT CHANNEL TO SCREEN
+00345  1360              ;*********************************
+00346  1360  A2 03              LDX #$03        ;FILE #Y
+00347  1362  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00348  1365              ;*********************************
+00349  1365              ; CHECK FORMAT OPTIONS
+00350  1365              ;*********************************
+00351  1365  AD 39 18           LDA DIROPT
+00352  1368  C9 30              CMP #'0'
+00353  136A  F0 14              BEQ CKSTOP
+00354  136C  C9 31              CMP #'1'
+00355  136E  F0 04              BEQ WEDOWD
+00356  1370  C9 32              CMP #'2'
+00357  1372  F0 06              BEQ WEDODB
+00358  1374              ;*********************************
+00359  1374              ; DBYTE DIRECTIVE
+00360  1374              ;*********************************
+00361  1374              WEDOWD=*
+00362  1374  20 90 19           JSR DOWRD
+00363  1377  4C 2B 14           JMP FOOT
+00364  137A              ;      JMP ENDFIL
+00365  137A              ;*********************************
+00366  137A              ; DBYTE DIRECTIVE
+00367  137A              ;*********************************
+00368  137A              WEDODB=*
+00369  137A  20 A0 1A           JSR DODBY
+00370  137D  4C 2B 14           JMP FOOT
+00371  1380              ;      JMP ENDFIL
+00372  1380              ;*********************************
+00373  1380              ; BEGIN BUILDING BYTE STATEMENTS
+00374  1380              ;*********************************
+00375  1380              CKSTOP =*
+00376  1380  A2 03              LDX #$03        ;RESET TO SCREEN
+00377  1382  20 C6 FF           JSR CHKIN       ;INPUT FILE
+00378  1385  20 E1 FF           JSR STOP        ;CHECK STOP
+00379  1388  D0 03              BNE OK2         ;IF NOT GO ON.
+00380  138A  4C 54 14           JMP BREAK       ;BREAK ERROR
+00381  138D              ;*********************************
+00382  138D              ; BEGIN READING BYTES FROM PRG
+00383  138D              ;*********************************
+00384  138D              OK2    =*
+00385  138D  A2 08              LDX #$08        ;FILE #8
+00386  138F  20 C6 FF           JSR CHKIN       ;INPUT FILE
+00387  1392              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0009
+
+LINE# LOC   CODE        LINE
+
+
+00388  1392              ; ZERO DATA COUNTER
+00389  1392              ;*********************************
+00390  1392  A9 00       DLOOP  LDA #$00
+00391  1394  8D D4 17           STA DATCNT
+00392  1397              ;*********************************
+00393  1397              ; LOOP
+00394  1397              ;*********************************
+00395  1397  EA          RLOOP  NOP
+00396  1398  A2 08              LDX #$08        ;FILE #8
+00397  139A  20 C6 FF           JSR CHKIN       ;INPUT FILE
+00398  139D              ;*********************************
+00399  139D              ; READ IN BYTE DATA
+00400  139D              ;*********************************
+00401  139D              ; PUT DATA BYTE IN RECORD BUFFER
+00402  139D              ; RETURNS CHARACTERS IN BYTCHR
+00403  139D              ;*********************************
+00404  139D  20 CF FF           JSR CHRIN       ;DATA BYTE
+00405  13A0  8D A7 15           STA CURBYT      ;STASH DATA BYTE
+00406  13A3  20 B7 FF           JSR READST      ;READ STATUS
+00407  13A6  8D D2 14           STA DSKSTA      ;STASH DISK STATUS
+00408  13A9              ;*********************************
+00409  13A9              ; CHECK DATA BYTE COUNT IF ZERO
+00410  13A9              ; THEN PRINT .BYTE DIRECTIVE
+00411  13A9              ;*********************************
+00412  13A9  AD D4 17           LDA DATCNT
+00413  13AC  D0 1D              BNE SUBBYT
+00414  13AE              ;*********************************
+00415  13AE              ; PRINT BYTE DIRECTIVE AND FIRST BYTE
+00416  13AE              ;*********************************
+00417  13AE              ; CHECK SCREEN OUTPUT OPTIONS
+00418  13AE              ; 0 = NO SCREEN
+00419  13AE              ; 1 = SCREEN OUTPUT
+00420  13AE              ;*********************************
+00421  13AE  AD B2 15           LDA SCROPT
+00422  13B1  D0 08              BNE PRTFI1
+00423  13B3              ;*********************************
+00424  13B3              ; SET OUTPUT CHANNEL TO SCREEN
+00425  13B3              ;*********************************
+00426  13B3  A2 03              LDX #$03        ;FILE #Y
+00427  13B5  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00428  13B8  20 A9 14           JSR PRTDFB      ;PRINT DIRECTIVE
+00429  13BB              ;*********************************
+00430  13BB              ; SET OUTPUT CHANNEL TO ASM FILE
+00431  13BB              ;*********************************
+00432  13BB  A2 07       PRTFI1 LDX #$07        ;FILE #Y
+00433  13BD  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00434  13C0  20 A9 14           JSR PRTDFB      ;PRINT DIRECTIVE
+00435  13C3              ;*********************************
+00436  13C3              ; SET OUTPUT CHANNEL TO SCREEN
+00437  13C3              ;*********************************
+00438  13C3  A2 03              LDX #$03        ;FILE #Y
+00439  13C5  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00440  13C8  B8                 CLV
+00441  13C9  50 1A              BVC CHKDSK
+00442  13CB              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0010
+
+LINE# LOC   CODE        LINE
+
+
+00443  13CB              ; SUBSEQUENT BYTES
+00444  13CB              ;*********************************
+00445  13CB              SUBBYT=*
+00446  13CB              ;*********************************       
+00447  13CB              ; CHECK SCREEN OUTPUT OPTIONS
+00448  13CB              ; 0 = NO SCREEN
+00449  13CB              ; 1 = SCREEN OUTPUT
+00450  13CB              ;*********************************
+00451  13CB  AD B2 15           LDA SCROPT
+00452  13CE  D0 08              BNE PRTFI2
+00453  13D0              ;*********************************
+00454  13D0              ; SET OUTPUT CHANNEL TO SCREEN
+00455  13D0              ;*********************************
+00456  13D0  A2 03              LDX #$03        ;FILE #Y
+00457  13D2  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00458  13D5  20 D4 14           JSR PRTSB       ;PRINT FOOTER
+00459  13D8              ;*********************************
+00460  13D8              ; SET OUTPUT CHANNEL TO ASM FILE
+00461  13D8              ;*********************************
+00462  13D8  A2 07       PRTFI2 LDX #$07        ;FILE #Y
+00463  13DA  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00464  13DD  20 D4 14           JSR PRTSB       ;PRINT FOOTER
+00465  13E0              ;*********************************
+00466  13E0              ; SET OUTPUT CHANNEL TO SCREEN
+00467  13E0              ;*********************************
+00468  13E0  A2 03              LDX #$03        ;FILE #Y
+00469  13E2  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00470  13E5              ;*********************************
+00471  13E5              ; CHECK FOR DISK ERROR - LIKE END OF FILE
+00472  13E5              ;*********************************
+00473  13E5              CHKDSK=*
+00474  13E5              ;      JSR READST   ;READ STATUS
+00475  13E5  AD D2 14           LDA DSKSTA      ;CHECK DISK STATUS
+00476  13E8  F0 02              BEQ CUROK       ;NEXT BYTE
+00477  13EA  D0 3F              BNE FOOT        ;DONE PRINT FOOTER
+00478  13EC              ;*********************************
+00479  13EC              ; INCREMENT RECORD COUNT
+00480  13EC              ;*********************************
+00481  13EC              CUROK  = *
+00482  13EC  AE D4 17           LDX DATCNT
+00483  13EF  E8                 INX
+00484  13F0  8E D4 17           STX DATCNT
+00485  13F3              ;*********************************
+00486  13F3              ; INCREMENT ADDRESS
+00487  13F3              ;*********************************
+00488  13F3  18                 CLC
+00489  13F4  AD AC 15           LDA CUADD
+00490  13F7  69 01              ADC #$01
+00491  13F9  8D AC 15           STA CUADD
+00492  13FC  90 08              BCC IN1
+00493  13FE  AD AD 15           LDA CUADD+1
+00494  1401  69 00              ADC #$00
+00495  1403  8D AD 15           STA CUADD+1
+00496  1406              IN1=*
+00497  1406              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0011
+
+LINE# LOC   CODE        LINE
+
+
+00498  1406              ; CHECK FOR MAXIMUM $08 BYTES
+00499  1406              ;*********************************
+00500  1406                                     ;CPX #$08
+00501  1406  EC D5 17           CPX DATLIM
+00502  1409  F0 03              BEQ SRLOP
+00503  140B  4C 97 13           JMP RLOOP
+00504  140E              ;*********************************
+00505  140E              ; NEW LINE
+00506  140E              ;*********************************
+00507  140E              ;SRLOP  JSR PRTCR  ;PRINT CR
+00508  140E                                     ;CLV
+00509  140E                                     ;BVC DLOOP
+00510  140E              ;*********************************
+00511  140E              ; PRINT NEWLINE
+00512  140E              ;*********************************
+00513  140E              ; CHECK SCREEN OUTPUT OPTIONS
+00514  140E              ; 0 = NO SCREEN
+00515  140E              ; 1 = SCREEN OUTPUT
+00516  140E              ;*********************************
+00517  140E  AD B2 15    SRLOP  LDA SCROPT
+00518  1411  D0 08              BNE PRTFI4
+00519  1413              ;*********************************
+00520  1413              ; SET OUTPUT CHANNEL TO SCREEN
+00521  1413              ;*********************************
+00522  1413  A2 03              LDX #$03        ;FILE #Y
+00523  1415  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00524  1418  20 CF 17           JSR PRTCR       ;PRINT CR
+00525  141B              ;*********************************
+00526  141B              ; SET OUTPUT CHANNEL TO ASM FILE
+00527  141B              ;*********************************
+00528  141B  A2 07       PRTFI4 LDX #$07        ;FILE #Y
+00529  141D  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00530  1420  20 CF 17           JSR PRTCR       ;PRINT CR
+00531  1423              ;*********************************
+00532  1423              ; SET OUTPUT CHANNEL TO SCREEN
+00533  1423              ;*********************************
+00534  1423  A2 03              LDX #$03        ;FILE #Y
+00535  1425  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00536  1428              ;*********************************
+00537  1428              ; NEXT DIRECTIVE LINE
+00538  1428              ;*********************************
+00539  1428  4C 92 13           JMP DLOOP
+00540  142B              ;*********************************
+00541  142B              ; PRINT FOOTER WITH END ADDRESS
+00542  142B              ;*********************************
+00543  142B              FOOT=*
+00544  142B              ;*********************************
+00545  142B              ; INCREMENT ADDRESS BY 2
+00546  142B              ;*********************************
+00547  142B              ;      CLC
+00548  142B              ;      LDA CUADD
+00549  142B              ;      ADC #$02
+00550  142B              ;      STA CUADD
+00551  142B              ;      BCC IN2
+00552  142B              ;      LDA CUADD+1
+
+
+
+
+
+
+PRG2BYTE......PAGE 0012
+
+LINE# LOC   CODE        LINE
+
+
+00553  142B              ;      ADC #$00
+00554  142B              ;      STA CUADD+1
+00555  142B              ;IN2=*
+00556  142B              ;*********************************
+00557  142B              ; LOAD CURRENT ADDRESS
+00558  142B              ;*********************************
+00559  142B  AD AC 15           LDA CUADD
+00560  142E  8D BF 16           STA ADDLO       ;LOW ADDRESS
+00561  1431  AD AD 15           LDA CUADD+1
+00562  1434  8D BE 16           STA ADDHI       ;HIGH ADDRESS
+00563  1437              ;*********************************
+00564  1437              ; PRINT FOOTER WITH END ADDRESS
+00565  1437              ;*********************************
+00566  1437              ; CHECK SCREEN OUTPUT OPTIONS
+00567  1437              ; 0 = NO SCREEN
+00568  1437              ; 1 = SCREEN OUTPUT
+00569  1437              ;*********************************
+00570  1437  AD B2 15           LDA SCROPT
+00571  143A  D0 08              BNE PRTFI3
+00572  143C              ;*********************************
+00573  143C              ; SET OUTPUT CHANNEL TO SCREEN
+00574  143C              ;*********************************
+00575  143C  A2 03              LDX #$03        ;FILE #Y
+00576  143E  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00577  1441  20 B9 14           JSR PRTFTA      ;PRINT FOOTER
+00578  1444              ;*********************************
+00579  1444              ; SET OUTPUT CHANNEL TO ASM FILE
+00580  1444              ;*********************************
+00581  1444  A2 07       PRTFI3 LDX #$07        ;FILE #Y
+00582  1446  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00583  1449  20 B9 14           JSR PRTFTA      ;PRINT FOOTER
+00584  144C              ;*********************************
+00585  144C              ; SET OUTPUT CHANNEL TO SCREEN
+00586  144C              ;*********************************
+00587  144C  A2 03              LDX #$03        ;FILE #Y
+00588  144E  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00589  1451  4C 61 14           JMP ENDFIL
+00590  1454              ;*********************************
+00591  1454              ; EXIT
+00592  1454              ;*********************************
+00593  1454              ; END OF PROGRAM FILE
+00594  1454              ;*********************************
+00595  1454              
+00596  1454              ;*********************************
+00597  1454              ; BREAK MESSAGE - STOP KEY PRESSED
+00598  1454              ;*********************************
+00599  1454              BREAK  =* 
+00600  1454              ;*********************************
+00601  1454              ; RESET OUTPUT TO SCREEN
+00602  1454              ;*********************************
+00603  1454  A2 03              LDX #$03        ;FILE #Y
+00604  1456  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00605  1459              ;*********************************
+00606  1459              ; PRINT BREAK MESSAGE
+00607  1459              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0013
+
+LINE# LOC   CODE        LINE
+
+
+00608  1459  A2 02              LDX #MSG2-MSG1  ;BREAK ERROR
+00609  145B  20 54 17           JSR PRINT       ;PRINT HEADING
+00610  145E  4C 70 14           JMP CLO1        ;CLOSE OUT
+00611  1461              ;*********************************
+00612  1461              ; END OF PROGRAM FILE
+00613  1461              ;*********************************
+00614  1461              ENDFIL =*
+00615  1461              ;*********************************
+00616  1461              ; RESET OUTPUT TO SCREEN
+00617  1461              ;*********************************
+00618  1461  A2 03              LDX #$03        ;FILE #3
+00619  1463  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00620  1466              ;*********************************
+00621  1466              ; PRINT END OF FILE MESSAGE
+00622  1466              ;*********************************
+00623  1466  A2 A7              LDX #MSG15-MSG1 ;OFFSET END OF FILE
+00624  1468  20 54 17           JSR PRINT       ;PRINT HEADING
+00625  146B              ;*********************************
+00626  146B              ; DISK ERROR EXIT POINT
+00627  146B              ;*********************************
+00628  146B              QUITER =*
+00629  146B              ;*********************************
+00630  146B              ; RESET OUTPUT TO SCREEN
+00631  146B              ;*********************************
+00632  146B  A2 03              LDX #$03        ;FILE #Y
+00633  146D  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+00634  1470              ;*********************************
+00635  1470              ; CLOSE OUT FILE AND RESET I/O
+00636  1470              ;*********************************
+00637  1470              CLO1   =*
+00638  1470  A9 03              LDA #$03        ;FILE #7
+00639  1472  20 C3 FF           JSR CLOSE       ;CLOSE
+00640  1475  A9 07              LDA #$07        ;FILE #7
+00641  1477  20 C3 FF           JSR CLOSE       ;CLOSE
+00642  147A  A9 08              LDA #$08        ;FILE #7
+00643  147C  20 C3 FF           JSR CLOSE       ;CLOSE
+00644  147F  20 CC FF           JSR CLRCHN      ;RESET I/O 
+00645  1482  60                 RTS             ;BACK TO BASIC
+00646  1483              ;#################################
+00647  1483              ;*********************************
+00648  1483              ; PRG TO BYTE UTILITIES
+00649  1483              ;*********************************
+00650  1483              ;#################################
+00651  1483              ;*********************************
+00652  1483              ; PRINT HEADER WITH PRG FILENAME
+00653  1483              ;*********************************
+00654  1483  20 2D 17    PRHEAD JSR PRTCML      ;PRINT COMMENT LINE
+00655  1486  20 DA 16           JSR PRTSEM
+00656  1489  20 D5 16           JSR PRTSPA
+00657  148C  A9 9D              LDA #<SUF       ;LOW BYTE MESSAGE
+00658  148E  A0 16              LDY #>SUF       ;HIGH BYTE MESSAGE
+00659  1490  20 6A 17           JSR STRPNT      ;OUTPUT MESSAGE
+00660  1493  20 CF 17           JSR PRTCR       ;NEW LINE
+00661  1496              ;*********************************
+00662  1496              ; PRINT HEADER WITH START ADDRESS
+
+
+
+
+
+
+PRG2BYTE......PAGE 0014
+
+LINE# LOC   CODE        LINE
+
+
+00663  1496              ;*********************************
+00664  1496  20 2D 17           JSR PRTCML      ;PRINT COMMENT LINE
+00665  1499  20 F3 16           JSR PRTORG      ;PRINT ORG
+00666  149C  20 EA 14           JSR CVTADD      ;CONVERT ADDRESS
+00667  149F  20 1B 15           JSR PRTADD      ;PRINT ADDRESS
+00668  14A2  20 CF 17           JSR PRTCR       ;NEW LINE
+00669  14A5  20 2D 17           JSR PRTCML      ;PRINT COMMENT LINE
+00670  14A8  60                 RTS             ;RETURN
+00671  14A9              ;*********************************
+00672  14A9              ; PRINT BYTE DIRECTIVE AND FIRST BYTE
+00673  14A9              ;*********************************
+00674  14A9  20 02 17    PRTDFB JSR PRTBYT      ;PRINT ' .BYTE '
+00675  14AC  20 DF 16           JSR PRTDOL      ;PRINT '$'
+00676  14AF  AD A7 15           LDA CURBYT      ;RETERIVE BYTE
+00677  14B2  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+00678  14B5  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+00679  14B8  60                 RTS
+00680  14B9              ;*********************************
+00681  14B9              ; PRINT FOOTER WITH END ADDRESS
+00682  14B9              ;*********************************
+00683  14B9  20 CF 17    PRTFTA JSR PRTCR       ;NEW LINE
+00684  14BC  20 2D 17           JSR PRTCML      ;PRINT COMMENT LINE
+00685  14BF  20 EA 14           JSR CVTADD      ;CONVERT ADDRESS
+00686  14C2  20 C3 16           JSR PRTXX       ;PRINT "XX"
+00687  14C5  20 1B 15           JSR PRTADD      ;PRINT ADDRESS
+00688  14C8  20 CB 16           JSR PRTPC       ;PRINT "=*"
+00689  14CB  20 CF 17           JSR PRTCR       ;NEW LINE
+00690  14CE  20 2D 17           JSR PRTCML      ;PRINT COMMENT LINE
+00691  14D1  60                 RTS
+00692  14D2              ;*********************************
+00693  14D2              ; DISK STATUS
+00694  14D2              ;*********************************
+00695  14D2  AA          DSKSTA .BYTE $AA
+00696  14D3  AA          DSKSTB .BYTE $AA
+00697  14D4              ;*********************************
+00698  14D4              ; SUBSEQUENT BYTES
+00699  14D4              ;*********************************
+00700  14D4  20 E4 16    PRTSB  JSR PRTCOM      ;PRINT ','
+00701  14D7  20 DF 16           JSR PRTDOL      ;PRINT '$'
+00702  14DA  AD A7 15           LDA CURBYT      ;RETERIVE BYTE
+00703  14DD  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+00704  14E0  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+00705  14E3  60                 RTS
+00706  14E4              ;*********************************
+00707  14E4              ; CONVERT WORD ADDRESS INTO 4 PETASCII CHAR
+00708  14E4              ;*********************************
+00709  14E4  AA          ADDCHP .BYTE $AA
+00710  14E5  AA          ADDCHR .BYTE $AA,$AA,$AA,$AA,$00
+00710  14E6  AA 
+00710  14E7  AA 
+00710  14E8  AA 
+00710  14E9  00 
+00711  14EA              ;*********************************
+00712  14EA              CVTADD =*
+00713  14EA  A9 00              LDA #$00
+
+
+
+
+
+
+PRG2BYTE......PAGE 0015
+
+LINE# LOC   CODE        LINE
+
+
+00714  14EC  8D E4 14           STA ADDCHP
+00715  14EF  AD BF 16           LDA ADDLO       ;LOW ADDRESS
+00716  14F2  48                 PHA             ;STACK IT
+00717  14F3  AD BE 16           LDA ADDHI       ;GET HIGH BYTE
+00718  14F6  20 FA 14           JSR RIGHT       ;PRINT IT
+00719  14F9  68                 PLA             ;PULL LOW BYTE
+00720  14FA              ;
+00721  14FA  48          RIGHT  PHA             ;STACK BYTE
+00722  14FB  4A                 LSR A           ;RIGHT JUSTIFY
+00723  14FC  4A                 LSR A           ; BYTE IN LOW
+00724  14FD  4A                 LSR A           ;  NIBBLE
+00725  14FE  4A                 LSR A           ;
+00726  14FF  20 55 15           JSR CHGASC      ;CONVERT BYTE
+00727  1502  AA                 TAX             ;STORE IN X
+00728  1503  68                 PLA             ;PULL BYTE
+00729  1504  29 0F              AND #$0F        ;MASK HIGH
+00730  1506  20 55 15           JSR CHGASC      ;CONVERT BYTE
+00731  1509              ;*********************************
+00732  1509              ; STORE 2 PETASCII CHARS OF ADDRESS NIBBLE
+00733  1509              ;*********************************
+00734  1509  48                 PHA             ;STACK RESULT
+00735  150A  8A                 TXA             ;GET HIGH NIBBLE 
+00736  150B  AE E4 14           LDX ADDCHP
+00737  150E  9D E5 14           STA ADDCHR,X
+00738  1511  E8                 INX
+00739  1512  68                 PLA             ;GET LOW NIBBLE
+00740  1513  9D E5 14           STA ADDCHR,X
+00741  1516  E8                 INX
+00742  1517  8E E4 14           STX ADDCHP
+00743  151A  60                 RTS
+00744  151B              ;*********************************
+00745  151B              ; PRINT ADDRESS
+00746  151B              ;*********************************
+00747  151B  A2 00       PRTADD LDX #$00
+00748  151D  BD E5 14           LDA ADDCHR,X
+00749  1520  20 D2 FF           JSR CHROUT
+00750  1523  E8                 INX
+00751  1524  BD E5 14           LDA ADDCHR,X
+00752  1527  20 D2 FF           JSR CHROUT
+00753  152A  E8                 INX
+00754  152B  BD E5 14           LDA ADDCHR,X
+00755  152E  20 D2 FF           JSR CHROUT
+00756  1531  E8                 INX
+00757  1532  BD E5 14           LDA ADDCHR,X
+00758  1535  4C D2 FF           JMP CHROUT
+00759  1538              ;*********************************
+00760  1538              ; CONVERT BYTE INTO 2 PETASCII CHARS
+00761  1538              ;*********************************
+00762  1538  AA          BYTCHR .BYTE $AA,$AA,$00
+00762  1539  AA 
+00762  153A  00 
+00763  153B              ;*********************************
+00764  153B  48          CVTBYT PHA             ;STACK BYTE
+00765  153C  4A                 LSR A           ;RIGHT JUSTIFY
+00766  153D  4A                 LSR A           ; BYTE IN LOW
+
+
+
+
+
+
+PRG2BYTE......PAGE 0016
+
+LINE# LOC   CODE        LINE
+
+
+00767  153E  4A                 LSR A           ;  NIBBLE
+00768  153F  4A                 LSR A           ;
+00769  1540  20 55 15           JSR CHGASC      ;CONVERT BYTE
+00770  1543  AA                 TAX             ;STORE IN X
+00771  1544  68                 PLA             ;PULL BYTE
+00772  1545  29 0F              AND #$0F        ;MASK HIGH
+00773  1547  20 55 15           JSR CHGASC      ;CONVERT BYTE
+00774  154A              ;*********************************
+00775  154A              ; STORE 2 PETASCII CHARS OF ADDRESS NIBBLE
+00776  154A              ;*********************************
+00777  154A  48                 PHA             ;STACK RESULT
+00778  154B  8A                 TXA             ;GET HIGH NIBBLE 
+00779  154C  8D 38 15           STA BYTCHR
+00780  154F  E8                 INX
+00781  1550  68                 PLA             ;GET LOW NIBBLE
+00782  1551  8D 39 15           STA BYTCHR+1
+00783  1554  60                 RTS
+00784  1555              ;*********************************
+00785  1555              ; CONVERT BYTE TO ASCII CHAR
+00786  1555              ;*********************************
+00787  1555  18          CHGASC CLC             ;CLEAR CARRY
+00788  1556  69 F6              ADC #$F6        ;ADD OFFSET
+00789  1558  90 02              BCC NOSIX       ;IF C=0 OK
+00790  155A  69 06              ADC #$06        ;ADD OFFSSET
+00791  155C  69 3A       NOSIX  ADC #$3A        ;ADD OFFSET
+00792  155E  60                 RTS             ;RETURN
+00793  155F              ;*********************************
+00794  155F              ; PRINT BYTE
+00795  155F              ;*********************************
+00796  155F  A2 00       PRTBYE LDX #$00
+00797  1561  BD 38 15           LDA BYTCHR,X
+00798  1564  20 D2 FF           JSR CHROUT
+00799  1567  E8                 INX
+00800  1568  BD 38 15           LDA BYTCHR,X
+00801  156B  4C D2 FF           JMP CHROUT
+00802  156E              ;*********************************
+00803  156E              ;  DISK ERROR CHECK
+00804  156E              ;*********************************
+00805  156E  A9 08       DISERR LDA #$08        ;DEV #8
+00806  1570  85 BA              STA FA          ;PUT IN DEV TABLE
+00807  1572  20 B4 FF           JSR TALK        ;SEND TALK
+00808  1575  A9 6F              LDA #$6F        ;SECONDARY ADDRESS
+00809  1577  85 B9              STA SA          ;PUT IN TABLE
+00810  1579  20 96 FF           JSR TALKSA      ;SEND SEC
+00811  157C  20 A5 FF           JSR IECIN       ;GET FIRST BYTE
+00812  157F  C9 30              CMP #'0'        ;IS IT A ZERO
+00813  1581  D0 0C              BNE DLOOC       ;IF NOT ZERO ERROR
+00814  1583  20 A5 FF    DLOOE  JSR IECIN       ;GET BYTE
+00815  1586  C9 0D              CMP #$0D        ;IS IT CR?
+00816  1588  D0 F9              BNE DLOOE       ;GET NEXT BYTE
+00817  158A  20 AB FF           JSR UNTALK      ;UNTALK
+00818  158D  18                 CLC             ;NO ERROR FLAG
+00819  158E  60                 RTS             ;RETURN
+00820  158F              ;*********************************
+00821  158F              ; PRINT DISK ERROR
+
+
+
+
+
+
+PRG2BYTE......PAGE 0017
+
+LINE# LOC   CODE        LINE
+
+
+00822  158F              ;*********************************
+00823  158F  48          DLOOC  PHA             ;STACK BYTE
+00824  1590  20 CF 17           JSR PRTCR       ;PRINT CR
+00825  1593  68                 PLA             ;GET BYTE
+00826  1594  20 D2 FF           JSR CHROUT      ;PRINT IT
+00827  1597  20 A5 FF    DLOOA  JSR IECIN       ;GET NEXT BYTE
+00828  159A  20 D2 FF           JSR CHROUT      ;PRINT IT
+00829  159D  C9 0D              CMP #$0D        ;IS IT CR
+00830  159F  D0 F6              BNE DLOOA       ;GET NEXT BYTE
+00831  15A1  20 AB FF           JSR UNTALK      ;UNTALK
+00832  15A4  38                 SEC             ;SET ERROR FLAG
+00833  15A5  60                 RTS             ;RETURN
+00834  15A6              ;*********************************
+00835  15A6              ; STORAGE
+00836  15A6              ;*********************************
+00837  15A6  AA          NUMBYT .BYTE $AA       ;NUMBER BYTES
+00838  15A7  AA          CURBYT .BYTE $AA       ;CURRENT BYTE IN RECORD
+00839  15A8  AA AA       RECORD .WORD $AAAA     ;RECORD NUMBER
+00840  15AA  AA AA       STADD  .WORD $AAAA     ;START ADDRESS
+00841  15AC  AA AA       CUADD  .WORD $AAAA     ;CURRENT ADDRESS
+00842  15AE  AA AA       ENADD  .WORD $AAAA     ;END ADDRESS
+00843  15B0  AA          COUNT  .BYTE $AA       ;COUNTER
+00844  15B1  AA          TEMP   .BYTE $AA       ;TEMPOARY
+00845  15B2  AA          SCROPT .BYTE $AA       ;SCREEN OUPUT OPTION
+00846  15B3              ;*********************************
+00847  15B3  AA          COUNT1 .BYTE $AA       ;COUNTER
+00848  15B4              ;*********************************
+00849  15B4              ; ERROR MESSAGES
+00850  15B4              ;*********************************
+00851  15B4  0D          MSG1   .BYTE $0D,$8D
+00851  15B5  8D 
+00852  15B6  0D          MSG2   .BYTE $0D
+00853  15B7  42 52       .BYTE  'BREAK',$8D
+00853  15BC  8D 
+00854  15BD  0D          MSG6   .BYTE $0D
+00855  15BE  46 49       .BYTE  'FILE ERRO',$D2
+00855  15C7  D2 
+00856  15C8              ;*********************************
+00857  15C8              ; MESSAGES
+00858  15C8              ;*********************************
+00859  15C8  0D          MSG7   .BYTE $0D,$0D,$0D
+00859  15C9  0D 
+00859  15CA  0D 
+00860  15CB  50 52       .BYTE  'PRG2BYTE.C64 V072882'
+00861  15DF  0D          .BYTE  $0D
+00862  15E0  28 43       .BYTE  '(C) 1982 BY COMMODORE BUSINESS '
+00863  15FF  4D 41       .BYTE  'MACHINES'
+00864  1607  A0          .BYTE  $A0
+00865  1608  0D          MSG8   .BYTE $0D
+00866  1609  53 4F       .BYTE  'SOURCE FILE NAME'
+00867  1619  0D          .BYTE  $0D
+00868  161A  20 3F       .BYTE  ' ?',$A0
+00868  161C  A0 
+00869  161D  0D          MSG9   .BYTE $0D
+00870  161E  50 52       .BYTE  'PRG NAME',$BA
+
+
+
+
+
+
+PRG2BYTE......PAGE 0018
+
+LINE# LOC   CODE        LINE
+
+
+00870  1626  BA 
+00871  1627  0D          MSG10  .BYTE $0D
+00872  1628  41 53       .BYTE  'ASM NOT SAVED',$A0
+00872  1635  A0 
+00873  1636  0D          MSG11  .BYTE $0D
+00874  1637  41 44       .BYTE  'ADDRESS',$A0
+00874  163E  A0 
+00875  163F  0D          MSG12  .BYTE $0D
+00876  1640  43 4F       .BYTE  'COUNT',$A0
+00876  1645  A0 
+00877  1646  0D          MSG13  .BYTE $0D
+00878  1647  42 59       .BYTE  'BYTE DATA',$8D
+00878  1650  8D 
+00879  1651  0D          MSG14  .BYTE $0D
+00880  1652  43 48       .BYTE  'CHECKSUM',$A0
+00880  165A  A0 
+00881  165B  0D          MSG15  .BYTE $0D
+00882  165C  45 4E       .BYTE  'END OF FILE',$8D
+00882  1667  8D 
+00883  1668  0D          MSG16  .BYTE $0D
+00884  1669  4C 41       .BYTE  'LAST RECORD',$8D
+00884  1674  8D 
+00885  1675              ;*********************************
+00886  1675              ; HEX DIGITS
+00887  1675              ;*********************************
+00888  1675  AA          DIGIT1 .BYTE $AA
+00889  1676  AA          DIGIT2 .BYTE $AA
+00890  1677  AA          DIGIT3 .BYTE $AA
+00891  1678  AA          DIGIT4 .BYTE $AA
+00892  1679              ;*********************************
+00893  1679              ; FILENAME NAME BUFFER
+00894  1679              ;*********************************
+00895  1679  AA          OUF    .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+00895  167A  AA 
+00895  167B  AA 
+00895  167C  AA 
+00895  167D  AA 
+00895  167E  AA 
+00896  167F  AA          .BYTE  $AA,$AA,$AA,$AA,$AA,$AA
+00896  1680  AA 
+00896  1681  AA 
+00896  1682  AA 
+00896  1683  AA 
+00896  1684  AA 
+00897  1685  AA          .BYTE  $AA,$AA,$AA,$AA,$AA,$AA
+00897  1686  AA 
+00897  1687  AA 
+00897  1688  AA 
+00897  1689  AA 
+00897  168A  AA 
+00898  168B              ;*********************************
+00899  168B              ; FILENAME NAME BUFFER
+00900  168B              ;*********************************
+00901  168B  AA          PUF    .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+00901  168C  AA 
+
+
+
+
+
+
+PRG2BYTE......PAGE 0019
+
+LINE# LOC   CODE        LINE
+
+
+00901  168D  AA 
+00901  168E  AA 
+00901  168F  AA 
+00901  1690  AA 
+00902  1691  AA          .BYTE  $AA,$AA,$AA,$AA,$AA,$AA
+00902  1692  AA 
+00902  1693  AA 
+00902  1694  AA 
+00902  1695  AA 
+00902  1696  AA 
+00903  1697  AA          .BYTE  $AA,$AA,$AA,$AA,$AA,$AA
+00903  1698  AA 
+00903  1699  AA 
+00903  169A  AA 
+00903  169B  AA 
+00903  169C  AA 
+00904  169D              ;*********************************
+00905  169D              ; FILENAME NAME BUFFER
+00906  169D              ;*********************************
+00907  169D  AA          SUF    .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+00907  169E  AA 
+00907  169F  AA 
+00907  16A0  AA 
+00907  16A1  AA 
+00907  16A2  AA 
+00908  16A3  AA          .BYTE  $AA,$AA,$AA,$AA,$AA,$AA
+00908  16A4  AA 
+00908  16A5  AA 
+00908  16A6  AA 
+00908  16A7  AA 
+00908  16A8  AA 
+00909  16A9  AA          .BYTE  $AA,$AA,$AA,$AA,$AA,$AA
+00909  16AA  AA 
+00909  16AB  AA 
+00909  16AC  AA 
+00909  16AD  AA 
+00909  16AE  AA 
+00910  16AF  00          SNUM   .BYTE $00
+00911  16B0              ;*********************************
+00912  16B0              ; INIT DISK
+00913  16B0              ;*********************************
+00914  16B0  49 30       INIT   .BYTE 'I0'
+00915  16B2              ;*********************************
+00916  16B2  2C 53       SRCM   .BYTE ',S,W'
+00917  16B6              ;*********************************
+00918  16B6  2C 50       PROGM  .BYTE ',P,R'
+00919  16BA              ;*********************************
+00920  16BA  AA          SAVO   .BYTE $AA
+00921  16BB  AA          SAVP   .BYTE $AA
+00922  16BC              ;*********************************
+00923  16BC  AA          RECHI  .BYTE $AA
+00924  16BD  AA          RECLO  .BYTE $AA
+00925  16BE              ;*********************************
+00926  16BE  AA          ADDHI  .BYTE $AA
+00927  16BF  AA          ADDLO  .BYTE $AA
+
+
+
+
+
+
+PRG2BYTE......PAGE 0020
+
+LINE# LOC   CODE        LINE
+
+
+00928  16C0              ;*********************************
+00929  16C0  AA          CURDAT .BYTE $AA
+00930  16C1              ;*********************************
+00931  16C1  AA AA       CHKSUM .WORD $AAAA
+00932  16C3              ;*********************************
+00933  16C3              ; PRINT "XX"
+00934  16C3              ;*********************************
+00935  16C3  A9 58       PRTXX  LDA #'X'
+00936  16C5  20 D2 FF           JSR CHROUT
+00937  16C8  4C D2 FF           JMP CHROUT
+00938  16CB              ;*********************************
+00939  16CB              ; PRINT "=*"
+00940  16CB              ;*********************************
+00941  16CB  A9 3D       PRTPC  LDA #'='
+00942  16CD  20 D2 FF           JSR CHROUT
+00943  16D0  A9 2A              LDA #'*'
+00944  16D2  4C D2 FF           JMP CHROUT
+00945  16D5              ;*********************************
+00946  16D5              ; PRINT ' '
+00947  16D5              ;*********************************
+00948  16D5  A9 20       PRTSPA LDA #' '        ;ASCII CR
+00949  16D7  4C D2 FF           JMP CHROUT      ;PRINT IT
+00950  16DA              ;*********************************
+00951  16DA              ; PRINT ';'
+00952  16DA              ;*********************************
+00953  16DA  A9 3B       PRTSEM LDA #';'        ;ASCII CR
+00954  16DC  4C D2 FF           JMP CHROUT      ;PRINT IT
+00955  16DF              ;*********************************
+00956  16DF              ; PRINT '$'
+00957  16DF              ;*********************************
+00958  16DF  A9 24       PRTDOL LDA #'$'        ;ASCII CR
+00959  16E1  4C D2 FF           JMP CHROUT      ;PRINT IT
+00960  16E4              ;*********************************
+00961  16E4              ; PRINT ','
+00962  16E4              ;*********************************
+00963  16E4  A9 2C       PRTCOM LDA #','        ;ASCII CR
+00964  16E6  4C D2 FF           JMP CHROUT      ;PRINT IT
+00965  16E9              ;*********************************
+00966  16E9              ; PRINT SPACE
+00967  16E9              ;*********************************
+00968  16E9  A9 20       PRTSPC LDA #' '        ;ASCII CR
+00969  16EB  4C D2 FF           JMP CHROUT      ;PRINT IT
+00970  16EE              ;*********************************
+00971  16EE              ; PRINT '=$'
+00972  16EE              ;*********************************
+00973  16EE  20 2A       MSST   .BYTE ' *=$'
+00974  16F2  00                 .BYTE 0
+00975  16F3              ;*********************************
+00976  16F3              ; PRINT ' *=$'
+00977  16F3              ;*********************************
+00978  16F3  A9 EE       PRTORG LDA #<MSST      ;LOW BYTE MESSAGE
+00979  16F5  A0 16              LDY #>MSST      ;HIGH BYTE MESSAGE
+00980  16F7  4C 6A 17           JMP STRPNT      ;OUTPUT MESSAGE
+00981  16FA              ;*********************************
+00982  16FA              ; PRINT ' .BYTE '
+
+
+
+
+
+
+PRG2BYTE......PAGE 0021
+
+LINE# LOC   CODE        LINE
+
+
+00983  16FA              ;*********************************
+00984  16FA  20 2E       MSBY   .BYTE ' .BYTE '
+00985  1701  00                 .BYTE 0
+00986  1702              ;*********************************
+00987  1702              ; PRINT " .BYTE "
+00988  1702              ;*********************************
+00989  1702  A9 FA       PRTBYT LDA #<MSBY      ;LOW BYTE MESSAGE
+00990  1704  A0 16              LDY #>MSBY      ;HIGH BYTE MESSAGE
+00991  1706  4C 6A 17           JMP STRPNT      ;OUTPUT MESSAGE
+00992  1709              ;*********************************
+00993  1709              ; PRINT COMMENT LINE
+00994  1709              ;*********************************
+00995  1709  3B 2A       MSCL   .BYTE ';*********************************'
+
+00996  172B  0D                 .BYTE $0D
+00997  172C  00                 .BYTE 0
+00998  172D              ;*********************************
+00999  172D              ; SYMBOLIC DISASSEMBLY OPTION
+01000  172D              ;*********************************
+01001  172D  A9 09       PRTCML LDA #<MSCL      ;LOW BYTE MESSAGE
+01002  172F  A0 17              LDY #>MSCL      ;HIGH BYTE MESSAGE
+01003  1731  4C 6A 17           JMP STRPNT      ;OUTPUT MESSAGE
+01004  1734              ;*********************************
+01005  1734              ; SCREEN OUTPUT OPTION
+01006  1734              ;*********************************
+01007  1734  0D          MSS1   .BYTE $0D
+01008  1735  4F 55              .BYTE 'OUTPUT TO SCREEN'
+01009  1745  0D                 .BYTE $0D
+01010  1746  28 59              .BYTE '(Y OR N/CR)? '
+01011  1753  00                 .BYTE 0
+01012  1754              ;*********************************
+01013  1754              ; OUTPUT STRING ROUTINE
+01014  1754              ;*********************************
+01015  1754  8E B0 15    PRINT  STX COUNT       ;PUT X IN COUNT
+01016  1757  AE B0 15    PLOOP  LDX COUNT       ;LOAD X FROM COUNT
+01017  175A  BD B4 15           LDA MSG1,X      ;LOAD CHAR
+01018  175D  08                 PHP             ;SAVE STATUS FLAG
+01019  175E  29 7F              AND #$7F        ;MASK BIT 8
+01020  1760  20 D2 FF           JSR CHROUT      ;PRINT CHAR
+01021  1763  EE B0 15           INC COUNT       ;INC OFFSET
+01022  1766  28                 PLP             ;GET STATUS FLAG
+01023  1767  10 EE              BPL PLOOP       ;IF BIT 8 ZERO
+01024  1769  60                 RTS             ;RETURN
+01025  176A              ;*********************************
+01026  176A              ; OUTPUT UTILITIES
+01027  176A              ;*********************************
+01028  176A              ; STRING OUTPUT ROUTINE
+01029  176A              ;*********************************
+01030  176A  85 02       STRPNT STA ZEROUR      ;POINTER TO
+01031  176C  84 03              STY ZEROUR+1    ;MESSAGE
+01032  176E  A0 00              LDY #$00        ;OFFSET
+01033  1770  B1 02       SOUT   LDA (ZEROUR),Y  ;GET CHAR
+01034  1772  F0 06              BEQ SEXIT       ;IF ZERO EXIT
+01035  1774  20 D2 FF           JSR CHROUT      ;PRINT
+01036  1777  C8                 INY             ;INC OFFSET
+01037  1778  D0 F6              BNE SOUT        ;LOOP
+
+
+
+
+
+
+PRG2BYTE......PAGE 0022
+
+LINE# LOC   CODE        LINE
+
+
+01038  177A  60          SEXIT  RTS             ;RETURN
+01039  177B              ;*********************************
+01040  177B              ; INPUT UTILITIES
+01041  177B              ;*********************************
+01042  177B              ; GET OPTION (CR/Y OR N): Y=C=0
+01043  177B              ;*********************************
+01044  177B  20 CF FF    CRYS   JSR CHRIN
+01045  177E  C9 59              CMP #'Y'
+01046  1780  F0 11              BEQ CRYS1
+01047  1782  C9 0D              CMP #$0D
+01048  1784  F0 0D              BEQ CRYS1
+01049  1786  D0 0D              BNE CRNO1
+01050  1788              ;*********************************
+01051  1788              ; GET OPTION (Y OR CR/N): Y=C=0
+01052  1788              ;*********************************
+01053  1788  20 CF FF    CRNO   JSR CHRIN
+01054  178B  C9 4E              CMP #'N'
+01055  178D  F0 06              BEQ CRNO1
+01056  178F  C9 0D              CMP #$0D
+01057  1791  F0 02              BEQ CRNO1
+01058  1793  18          CRYS1  CLC
+01059  1794  60                 RTS
+01060  1795  38          CRNO1  SEC
+01061  1796  60                 RTS
+01062  1797              ;*********************************
+01063  1797              ; INPUT STRING ROUTINE
+01064  1797              ;*********************************
+01065  1797  A0 00       INSTNO LDY #$00
+01066  1799  20 CF FF    INSTN1 JSR CHRIN
+01067  179C  99 79 16           STA OUF,Y
+01068  179F  C8                 INY
+01069  17A0  C9 0D              CMP #$0D
+01070  17A2  D0 F5              BNE INSTN1
+01071  17A4  88                 DEY
+01072  17A5  60                 RTS
+01073  17A6              ;*********************************
+01074  17A6              ; INPUT STRING ROUTINE
+01075  17A6              ;*********************************
+01076  17A6  A0 00       INSTNP LDY #$00
+01077  17A8  20 CF FF    INSTN2 JSR CHRIN
+01078  17AB  99 8B 16           STA PUF,Y
+01079  17AE  99 9D 16           STA SUF,Y
+01080  17B1  C8                 INY
+01081  17B2  C9 0D              CMP #$0D
+01082  17B4  D0 F2              BNE INSTN2
+01083  17B6  88                 DEY
+01084  17B7  8C AF 16           STY SNUM
+01085  17BA  60                 RTS
+01086  17BB              ;*********************************
+01087  17BB              ; COPY PRG FILENAME
+01088  17BB              ;*********************************
+01089  17BB  98          CNSTNP TYA
+01090  17BC  AA                 TAX
+01091  17BD  A9 00              LDA #$00
+01092  17BF  9D 9D 16           STA SUF,X
+
+
+
+
+
+
+PRG2BYTE......PAGE 0023
+
+LINE# LOC   CODE        LINE
+
+
+01093  17C2  CA                 DEX
+01094  17C3  BD 8B 16    CNSTN1 LDA PUF,X
+01095  17C6  9D 9D 16           STA SUF,X
+01096  17C9  CA                 DEX
+01097  17CA  10 F7              BPL CNSTN1
+01098  17CC  F0 F5              BEQ CNSTN1
+01099  17CE  60                 RTS
+01100  17CF              ;*********************************
+01101  17CF              ; OUTPUT CARRAIGE RETURN
+01102  17CF              ;*********************************
+01103  17CF  A9 0D       PRTCR  LDA #$0D        ;ASCII CR
+01104  17D1  4C D2 FF           JMP CHROUT      ;PRINT IT
+01105  17D4              ;*********************************
+01106  17D4              ; DIDRECTIVE DATA ELEMENT COUNT
+01107  17D4              ;*********************************
+01108  17D4  AA          DATCNT .BYTE $AA
+01109  17D5              ;*********************************
+01110  17D5              ; DIDRECTIVE DATA ELEMENT COUNT
+01111  17D5              ;*********************************
+01112  17D5  AA          DATLIM .BYTE $AA
+01113  17D6              ;*********************************
+01114  17D6              ; CURRENT RECORD HOLDING BUFFER
+01115  17D6              ;*********************************
+01116  17D6  AA AA       RECCNT .WORD $AAAA
+01117  17D8  AA          RECPNT .BYTE $AA
+01118  17D9              RECBUF =*
+01119  17D9  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01119  17DA  AA 
+01119  17DB  AA 
+01119  17DC  AA 
+01119  17DD  AA 
+01119  17DE  AA 
+01120  17DF  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01120  17E0  AA 
+01120  17E1  AA 
+01120  17E2  AA 
+01120  17E3  AA 
+01120  17E4  AA 
+01121  17E5  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01121  17E6  AA 
+01121  17E7  AA 
+01121  17E8  AA 
+01121  17E9  AA 
+01121  17EA  AA 
+01122  17EB  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01122  17EC  AA 
+01122  17ED  AA 
+01122  17EE  AA 
+01122  17EF  AA 
+01122  17F0  AA 
+01123  17F1  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01123  17F2  AA 
+01123  17F3  AA 
+01123  17F4  AA 
+01123  17F5  AA 
+
+
+
+
+
+
+PRG2BYTE......PAGE 0024
+
+LINE# LOC   CODE        LINE
+
+
+01123  17F6  AA 
+01124  17F7  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01124  17F8  AA 
+01124  17F9  AA 
+01124  17FA  AA 
+01124  17FB  AA 
+01124  17FC  AA 
+01125  17FD  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01125  17FE  AA 
+01125  17FF  AA 
+01125  1800  AA 
+01125  1801  AA 
+01125  1802  AA 
+01126  1803  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01126  1804  AA 
+01126  1805  AA 
+01126  1806  AA 
+01126  1807  AA 
+01126  1808  AA 
+01127  1809  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01127  180A  AA 
+01127  180B  AA 
+01127  180C  AA 
+01127  180D  AA 
+01127  180E  AA 
+01128  180F  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01128  1810  AA 
+01128  1811  AA 
+01128  1812  AA 
+01128  1813  AA 
+01128  1814  AA 
+01129  1815  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01129  1816  AA 
+01129  1817  AA 
+01129  1818  AA 
+01129  1819  AA 
+01129  181A  AA 
+01130  181B  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01130  181C  AA 
+01130  181D  AA 
+01130  181E  AA 
+01130  181F  AA 
+01130  1820  AA 
+01131  1821  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01131  1822  AA 
+01131  1823  AA 
+01131  1824  AA 
+01131  1825  AA 
+01131  1826  AA 
+01132  1827  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01132  1828  AA 
+01132  1829  AA 
+01132  182A  AA 
+01132  182B  AA 
+01132  182C  AA 
+
+
+
+
+
+
+PRG2BYTE......PAGE 0025
+
+LINE# LOC   CODE        LINE
+
+
+01133  182D  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01133  182E  AA 
+01133  182F  AA 
+01133  1830  AA 
+01133  1831  AA 
+01133  1832  AA 
+01134  1833  AA                 .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01134  1834  AA 
+01134  1835  AA 
+01134  1836  AA 
+01134  1837  AA 
+01134  1838  AA 
+01135  1839              ;*********************************
+01136  1839              ; DIRECTIVE OPTION
+01137  1839              ;*********************************
+01138  1839  00          DIROPT .BYTE $00
+01139  183A              ;*********************************
+01140  183A              ; DIRECTIVE OPTION
+01141  183A              ;*********************************
+01142  183A              IDIROP=*
+01143  183A  A9 5B              LDA #<MSDO      ;DIRECTIVE TYPE
+01144  183C  A0 18              LDY #>MSDO
+01145  183E  20 6A 17           JSR STRPNT
+01146  1841  20 E4 FF    AOP3   JSR GETIN
+01147  1844  F0 FB              BEQ AOP3
+01148  1846  C9 30              CMP #'0'
+01149  1848  F0 0A              BEQ ASC
+01150  184A  C9 31              CMP #'1'
+01151  184C  F0 06              BEQ ASC
+01152  184E  C9 32              CMP #'2'
+01153  1850  F0 02              BEQ ASC
+01154  1852  D0 ED              BNE AOP3
+01155  1854  20 D2 FF    ASC    JSR CHROUT
+01156  1857  8D 39 18           STA DIROPT
+01157  185A  60                 RTS
+01158  185B              ;*********************************
+01159  185B              ; DIRECTIVE OPTION
+01160  185B              ;*********************************
+01161  185B  0D          MSDO   .BYTE $0D,$0D
+01161  185C  0D 
+01162  185D  44 49              .BYTE 'DIRECTIVE OPTIONS'
+01163  186E  0D                 .BYTE $0D,$0D
+01163  186F  0D 
+01164  1870  30 20              .BYTE '0 BYTE',$0D
+01164  1876  0D 
+01165  1877  31 20              .BYTE '1 WORD',$0D
+01165  187D  0D 
+01166  187E  32 20              .BYTE '2 DBYTE',$0D
+01166  1885  0D 
+01167  1886  45 4E              .BYTE 'ENTER DIRECTIVE CODE'
+01168  189A  0D                 .BYTE $0D
+01169  189B  3A 20              .BYTE ': '
+01170  189D  00                 .BYTE 0
+01171  189E              ;*********************************
+01172  189E              ;
+
+
+
+
+
+
+PRG2BYTE......PAGE 0026
+
+LINE# LOC   CODE        LINE
+
+
+01173  189E              ;*********************************
+01174  189E              
+01175  189E              ;*********************************
+01176  189E              ; NUMBER OF DATA ENTRIES IN DIRECTIVE LINE
+01177  189E              ;*********************************
+01178  189E  A9 2E       NOTABS LDA #<MSA1      ;NUMBER OF DATA
+01179  18A0  A0 19              LDY #>MSA1
+01180  18A2  20 6A 17           JSR STRPNT
+01181  18A5  20 C4 18           JSR GETCNT      ;INPUT HEX BYTE
+01182  18A8  AD D5 17           LDA DATLIM
+01183  18AB  F0 11              BEQ SETMIN      ; IF ZERO SET DEFAULT
+01184  18AD              ; IF THE C FLAG IS 0, THEN A (UNSIGNED) < NUM (UN
+SIGNED) AND BCC WILL BRANCH
+01185  18AD  C9 11              CMP #$11
+01186  18AF  B0 07              BCS SETMAX
+01187  18B1  60                 RTS
+01188  18B2              ;*********************************
+01189  18B2              ;
+01190  18B2              ;*********************************
+01191  18B2  A9 08       SETDEF LDA #$08
+01192  18B4  8D D5 17           STA DATLIM
+01193  18B7  60                 RTS 
+01194  18B8  A9 10       SETMAX LDA #$10
+01195  18BA  8D D5 17           STA DATLIM
+01196  18BD  60                 RTS 
+01197  18BE  A9 01       SETMIN LDA #$01
+01198  18C0  8D D5 17           STA DATLIM
+01199  18C3  60                 RTS 
+01200  18C4              ;*********************************
+01201  18C4              ; INPUT HEX CHAR STRING
+01202  18C4              ;*********************************
+01203  18C4  A9 08       GETCNT LDA #$08
+01204  18C6  8D D5 17           STA DATLIM
+01205  18C9  20 1F 19           JSR INSTNG
+01206  18CC  88                 DEY
+01207  18CD  30 09              BMI INEND
+01208  18CF              ;*********************************
+01209  18CF              ; PROCESS INPUT
+01210  18CF              ;*********************************
+01211  18CF  20 D9 18           JSR GETBYT
+01212  18D2  AD B1 15           LDA TEMP
+01213  18D5  8D D5 17           STA DATLIM
+01214  18D8  60          INEND  RTS
+01215  18D9              ;*********************************
+01216  18D9              ;
+01217  18D9              ;*********************************
+01218  18D9              
+01219  18D9              ;*********************************
+01220  18D9              ; COVERT BUFFER INTO BYTES
+01221  18D9              ;*********************************
+01222  18D9  B9 0D 19    GETBYT LDA BUF,Y
+01223  18DC  20 F6 18           JSR BINARY
+01224  18DF  8D B1 15           STA TEMP
+01225  18E2  88                 DEY
+01226  18E3  30 10              BMI INENX
+01227  18E5  B9 0D 19           LDA BUF,Y
+
+
+
+
+
+
+PRG2BYTE......PAGE 0027
+
+LINE# LOC   CODE        LINE
+
+
+01228  18E8  20 F6 18           JSR BINARY
+01229  18EB  0A                 ASL A
+01230  18EC  0A                 ASL A
+01231  18ED  0A                 ASL A
+01232  18EE  0A                 ASL A
+01233  18EF  0D B1 15           ORA TEMP
+01234  18F2  8D B1 15           STA TEMP
+01235  18F5  60          INENX  RTS
+01236  18F6              ;*********************************
+01237  18F6              ; CONVERT A INTO HEX NIBBLE
+01238  18F6              ;*********************************
+01239  18F6  38          BINARY SEC
+01240  18F7  E9 30              SBC #'0'
+01241  18F9  90 0E              BCC NOHEX
+01242  18FB  C9 0A              CMP #$0A
+01243  18FD  90 0C              BCC YSHEX
+01244  18FF  E9 07              SBC #$07
+01245  1901  C9 10              CMP #$10
+01246  1903  B0 04              BCS NOHEX
+01247  1905  C9 0A              CMP #$0A
+01248  1907  B0 02              BCS YSHEX
+01249  1909  38          NOHEX  SEC
+01250  190A  60                 RTS
+01251  190B  18          YSHEX  CLC
+01252  190C  60                 RTS
+01253  190D              ;*********************************
+01254  190D              ; GENERAL INPUT BUFFER
+01255  190D              ;*********************************
+01256  190D  AA          BUF    .BYTE $AA,$AA,$AA,$AA,$AA,$AA
+01256  190E  AA 
+01256  190F  AA 
+01256  1910  AA 
+01256  1911  AA 
+01256  1912  AA 
+01257  1913  AA          .BYTE  $AA,$AA,$AA,$AA,$AA,$AA
+01257  1914  AA 
+01257  1915  AA 
+01257  1916  AA 
+01257  1917  AA 
+01257  1918  AA 
+01258  1919  AA          .BYTE  $AA,$AA,$AA,$AA,$AA,$AA
+01258  191A  AA 
+01258  191B  AA 
+01258  191C  AA 
+01258  191D  AA 
+01258  191E  AA 
+01259  191F              ;*********************************
+01260  191F              ; INPUT STRING ROUTINE
+01261  191F              ;*********************************
+01262  191F  A0 00       INSTNG LDY #$00
+01263  1921  20 CF FF    INSTN3 JSR CHRIN
+01264  1924  99 0D 19           STA BUF,Y
+01265  1927  C8                 INY
+01266  1928  C9 0D              CMP #$0D
+01267  192A  D0 F5              BNE INSTN3
+
+
+
+
+
+
+PRG2BYTE......PAGE 0028
+
+LINE# LOC   CODE        LINE
+
+
+01268  192C  88                 DEY
+01269  192D  60                 RTS
+01270  192E              ;*********************************
+01271  192E              ; NUMBER OF DATA ENTRIES IN DIRECTIVE LINE
+01272  192E              ;*********************************
+01273  192E  0D          MSA1   .BYTE $0D
+01274  192F  4E 55       .BYTE  'NUMBER OF ENTRIES'
+01275  1940  0D          .BYTE  $0D
+01276  1941  20 50       .BYTE  ' PER DIRECTIVE'
+01277  194F  0D          .BYTE  $0D
+01278  1950  49 4E       .BYTE  'IN HEX MIN $01'
+01279  195E  0D          .BYTE  $0D
+01280  195F  20 2F       .BYTE  ' / MAX $10'
+01281  1969  0D          .BYTE  $0D
+01282  196A  44 45       .BYTE  'DEFAULT $08'
+01283  1975  0D          .BYTE  $0D
+01284  1976  28 24       .BYTE  '($01-$10 OR $08/CR)'
+01285  1989  0D          .BYTE  $0D
+01286  198A  20 3A 24    .BYTE  ' :$'
+01287  198D  00          .BYTE  0
+01288  198E              ;*********************************
+01289  198E              ;
+01290  198E              ;*********************************
+01291  198E              .LIB   DOWORD.ASM
+01292  198E              ;*********************************
+01293  198E              ; WORD DIRECTIVE
+01294  198E              ;*********************************
+01295  198E  00 00       CURWRD .WORD $0000     ;CURRENT WORD
+01296  1990              ;*********************************
+01297  1990              ; WORD DIRECTIVE
+01298  1990              ;*********************************
+01299  1990              DOWRD=*
+01300  1990              ;      JMP FOOTW
+01301  1990              ;*********************************
+01302  1990              ; BEGIN BUILDING WORD STATEMENTS
+01303  1990              ;*********************************
+01304  1990  A2 03              LDX #$03        ;RESET TO SCREEN
+01305  1992  20 C6 FF           JSR CHKIN       ;INPUT FILE
+01306  1995  20 E1 FF           JSR STOP        ;CHECK STOP
+01307  1998  D0 03              BNE DLOOW       ;IF NOT GO ON.
+01308  199A  4C 54 14           JMP BREAK       ;BREAK ERROR
+01309  199D              ;*********************************
+01310  199D              ; ZERO DATA COUNTER
+01311  199D              ;*********************************
+01312  199D  A9 00       DLOOW  LDA #$00
+01313  199F  8D D4 17           STA DATCNT
+01314  19A2              ;*********************************
+01315  19A2              ; LOOP
+01316  19A2              ;*********************************
+01317  19A2  EA          RLOOW  NOP
+01318  19A3  A2 08              LDX #$08        ;FILE #8
+01319  19A5  20 C6 FF           JSR CHKIN       ;INPUT FILE
+01320  19A8              ;*********************************
+01321  19A8              ; READ IN WORD DATA
+01322  19A8              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0029
+
+LINE# LOC   CODE        LINE
+
+
+01323  19A8  20 CF FF           JSR CHRIN       ;DATA BYTE
+01324  19AB  8D 8E 19           STA CURWRD      ;STASH DATA BYTE
+01325  19AE  20 B7 FF           JSR READST      ;READ STATUS
+01326  19B1  8D D2 14           STA DSKSTA      ;STASH DISK STATUS
+01327  19B4                     
+01328  19B4  20 CF FF           JSR CHRIN       ;DATA BYTE
+01329  19B7  8D 8F 19           STA CURWRD+1    ;STASH DATA BYTE
+01330  19BA  20 B7 FF           JSR READST      ;READ STATUS
+01331  19BD  8D D3 14           STA DSKSTB      ;STASH DISK STATUS
+01332  19C0              ;*********************************
+01333  19C0              ; CHECK DATA WORD COUNT IF ZERO
+01334  19C0              ; THEN PRINT .WORD DIRECTIVE
+01335  19C0              ;*********************************
+01336  19C0  AD D4 17           LDA DATCNT
+01337  19C3  D0 1D              BNE SUBWRD
+01338  19C5              ;*********************************
+01339  19C5              ; PRINT WORD DIRECTIVE AND FIRST WORD
+01340  19C5              ;*********************************
+01341  19C5              ; CHECK SCREEN OUTPUT OPTIONS
+01342  19C5              ; 0 = NO SCREEN
+01343  19C5              ; 1 = SCREEN OUTPUT
+01344  19C5              ;*********************************
+01345  19C5  AD B2 15           LDA SCROPT
+01346  19C8  D0 08              BNE PRTFI5
+01347  19CA              ;*********************************
+01348  19CA              ; SET OUTPUT CHANNEL TO SCREEN
+01349  19CA              ;*********************************
+01350  19CA  A2 03              LDX #$03        ;FILE #Y
+01351  19CC  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01352  19CF  20 5D 1A           JSR PRTDFW      ;PRINT DIRECTIVE
+01353  19D2              ;*********************************
+01354  19D2              ; SET OUTPUT CHANNEL TO ASM FILE
+01355  19D2              ;*********************************
+01356  19D2  A2 07       PRTFI5 LDX #$07        ;FILE #Y
+01357  19D4  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01358  19D7  20 5D 1A           JSR PRTDFW      ;PRINT DIRECTIVE
+01359  19DA              ;*********************************
+01360  19DA              ; SET OUTPUT CHANNEL TO SCREEN
+01361  19DA              ;*********************************
+01362  19DA  A2 03              LDX #$03        ;FILE #Y
+01363  19DC  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01364  19DF  B8                 CLV
+01365  19E0  50 1A              BVC CHKDSW
+01366  19E2              ;*********************************
+01367  19E2              ; SUBSEQUENT WORDS
+01368  19E2              ;*********************************
+01369  19E2              
+01370  19E2              ;*********************************
+01371  19E2              ; CHECK SCREEN OUTPUT OPTIONS
+01372  19E2              ; 0 = NO SCREEN
+01373  19E2              ; 1 = SCREEN OUTPUT
+01374  19E2              ;*********************************
+01375  19E2  AD B2 15    SUBWRD LDA SCROPT
+01376  19E5  D0 08              BNE PRTFI6
+01377  19E7              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0030
+
+LINE# LOC   CODE        LINE
+
+
+01378  19E7              ; SET OUTPUT CHANNEL TO SCREEN
+01379  19E7              ;*********************************
+01380  19E7  A2 03              LDX #$03        ;FILE #Y
+01381  19E9  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01382  19EC  20 76 1A           JSR PRTSW       ;PRINT FOOTER
+01383  19EF              ;*********************************
+01384  19EF              ; SET OUTPUT CHANNEL TO ASM FILE
+01385  19EF              ;*********************************
+01386  19EF  A2 07       PRTFI6 LDX #$07        ;FILE #Y
+01387  19F1  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01388  19F4  20 76 1A           JSR PRTSW       ;PRINT FOOTER
+01389  19F7              ;*********************************
+01390  19F7              ; SET OUTPUT CHANNEL TO SCREEN
+01391  19F7              ;*********************************
+01392  19F7  A2 03              LDX #$03        ;FILE #Y
+01393  19F9  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01394  19FC              ;*********************************
+01395  19FC              ; CHECK FOR DISK ERROR - LIKE END OF FILE
+01396  19FC              ;*********************************
+01397  19FC              CHKDSW=*
+01398  19FC  AD D2 14           LDA DSKSTA      ;CHECK DISK STATUS
+01399  19FF  0D D3 14           ORA DSKSTB      ;CHECK DISK STATUS
+01400  1A02  F0 03              BEQ CUROW       ;NEXT BYTE
+01401  1A04  4C 49 1A           JMP FOOTW       ;DONE PRINT FOOTER
+01402  1A07              ;*********************************
+01403  1A07              ; INCREMENT RECORD COUNT
+01404  1A07              ;*********************************
+01405  1A07  AE D4 17    CUROW  LDX DATCNT
+01406  1A0A  E8                 INX
+01407  1A0B  8E D4 17           STX DATCNT
+01408  1A0E              ;*********************************
+01409  1A0E              ; INCREMENT ADDRESS BY 2
+01410  1A0E              ;*********************************
+01411  1A0E  18                 CLC
+01412  1A0F  AD AC 15           LDA CUADD
+01413  1A12  69 02              ADC #$02
+01414  1A14  8D AC 15           STA CUADD
+01415  1A17  90 08              BCC IN3
+01416  1A19  AD AD 15           LDA CUADD+1
+01417  1A1C  69 00              ADC #$00
+01418  1A1E  8D AD 15           STA CUADD+1
+01419  1A21              ;*********************************
+01420  1A21              ; CHECK FOR MAXIMUM $08 WORDS
+01421  1A21              ;*********************************
+01422  1A21  AE D4 17    IN3    LDX DATCNT
+01423  1A24  EC D5 17           CPX DATLIM
+01424  1A27  F0 03              BEQ SRLOW
+01425  1A29  4C A2 19           JMP RLOOW
+01426  1A2C              ;*********************************
+01427  1A2C              ; PRINT NEWLINE
+01428  1A2C              ;*********************************
+01429  1A2C              ; CHECK SCREEN OUTPUT OPTIONS
+01430  1A2C              ; 0 = NO SCREEN
+01431  1A2C              ; 1 = SCREEN OUTPUT
+01432  1A2C              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0031
+
+LINE# LOC   CODE        LINE
+
+
+01433  1A2C  AD B2 15    SRLOW  LDA SCROPT
+01434  1A2F  D0 08              BNE PRTFI7
+01435  1A31              ;*********************************
+01436  1A31              ; SET OUTPUT CHANNEL TO SCREEN
+01437  1A31              ;*********************************
+01438  1A31  A2 03              LDX #$03        ;FILE #Y
+01439  1A33  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01440  1A36  20 CF 17           JSR PRTCR       ;PRINT CR
+01441  1A39              ;*********************************
+01442  1A39              ; SET OUTPUT CHANNEL TO ASM FILE
+01443  1A39              ;*********************************
+01444  1A39  A2 07       PRTFI7 LDX #$07        ;FILE #Y
+01445  1A3B  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01446  1A3E  20 CF 17           JSR PRTCR       ;PRINT CR
+01447  1A41              ;*********************************
+01448  1A41              ; SET OUTPUT CHANNEL TO SCREEN
+01449  1A41              ;*********************************
+01450  1A41  A2 03              LDX #$03        ;FILE #Y
+01451  1A43  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01452  1A46              ;*********************************
+01453  1A46              ; NEXT DIRECTIVE LINE
+01454  1A46              ;*********************************
+01455  1A46  4C 9D 19           JMP DLOOW
+01456  1A49              ;*********************************
+01457  1A49              
+01458  1A49              ;*********************************
+01459  1A49              ;
+01460  1A49              ;*********************************
+01461  1A49              FOOTW=*
+01462  1A49              ;*********************************
+01463  1A49              ; INCREMENT ADDRESS BY 1 PAST LAST WORD
+01464  1A49              ;*********************************
+01465  1A49  18                 CLC
+01466  1A4A  AD AC 15           LDA CUADD
+01467  1A4D  69 01              ADC #$01
+01468  1A4F  8D AC 15           STA CUADD
+01469  1A52  90 08              BCC IN4
+01470  1A54  AD AD 15           LDA CUADD+1
+01471  1A57  69 00              ADC #$00
+01472  1A59  8D AD 15           STA CUADD+1
+01473  1A5C              ;*********************************
+01474  1A5C              ;
+01475  1A5C              ;*********************************
+01476  1A5C  60          IN4    RTS
+01477  1A5D              ;*********************************
+01478  1A5D              ;
+01479  1A5D              ;*********************************
+01480  1A5D              
+01481  1A5D              ;*********************************
+01482  1A5D              ; PRINT WORD DIRECTIVE AND FIRST WORD
+01483  1A5D              ;*********************************
+01484  1A5D  20 97 1A    PRTDFW JSR PRTWRD      ;PRINT ' .WORD '
+01485  1A60  20 DF 16           JSR PRTDOL      ;PRINT '$'
+01486  1A63  AD 8F 19           LDA CURWRD+1    ;RETERIVE BYTE
+01487  1A66  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+
+
+
+
+
+
+PRG2BYTE......PAGE 0032
+
+LINE# LOC   CODE        LINE
+
+
+01488  1A69  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+01489  1A6C                     
+01490  1A6C  AD 8E 19           LDA CURWRD      ;RETERIVE BYTE
+01491  1A6F  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+01492  1A72  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+01493  1A75                     
+01494  1A75  60                 RTS
+01495  1A76              ;*********************************
+01496  1A76              ; SUBSEQUENT BYTES
+01497  1A76              ;*********************************
+01498  1A76  20 E4 16    PRTSW  JSR PRTCOM      ;PRINT ','
+01499  1A79  20 DF 16           JSR PRTDOL      ;PRINT '$'
+01500  1A7C  AD 8F 19           LDA CURWRD+1    ;RETERIVE BYTE
+01501  1A7F  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+01502  1A82  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+01503  1A85                     
+01504  1A85  AD 8E 19           LDA CURWRD      ;RETERIVE BYTE
+01505  1A88  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+01506  1A8B  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+01507  1A8E                     
+01508  1A8E  60                 RTS
+01509  1A8F              ;*********************************
+01510  1A8F              ; PRINT ' .WORD '
+01511  1A8F              ;*********************************
+01512  1A8F  20 2E       MSWD   .BYTE ' .WORD '
+01513  1A96  00                 .BYTE 0
+01514  1A97              ;*********************************
+01515  1A97              ; PRINT " .WORD "
+01516  1A97              ;*********************************
+01517  1A97  A9 8F       PRTWRD LDA #<MSWD      ;LOW BYTE MESSAGE
+01518  1A99  A0 1A              LDY #>MSWD      ;HIGH BYTE MESSAGE
+01519  1A9B  4C 6A 17           JMP STRPNT      ;OUTPUT MESSAGE
+01520  1A9E              ;*********************************
+01521  1A9E              ; WORD DIRECTIVE
+01522  1A9E              ;*********************************
+01522  1A9E              ;
+01523  1A9E              ;*********************************
+01524  1A9E              ;
+01525  1A9E              ;*********************************
+01526  1A9E              .LIB   DODBY.ASM
+01527  1A9E              ;*********************************
+01528  1A9E              ; DBYTE DIRECTIVE
+01529  1A9E              ;*********************************
+01530  1A9E  00 00       CURDBY .WORD $0000     ;CURRENT DBYTE
+01531  1AA0              ;*********************************
+01532  1AA0              ; DBYTE DIRECTIVE
+01533  1AA0              ;*********************************
+01534  1AA0              DODBY=*
+01535  1AA0              ;      JMP FOOTD
+01536  1AA0              ;*********************************
+01537  1AA0              ; BEGIN BUILDING DBYTE STATEMENTS
+01538  1AA0              ;*********************************
+01539  1AA0  A2 03              LDX #$03        ;RESET TO SCREEN
+01540  1AA2  20 C6 FF           JSR CHKIN       ;INPUT FILE
+01541  1AA5  20 E1 FF           JSR STOP        ;CHECK STOP
+
+
+
+
+
+
+PRG2BYTE......PAGE 0033
+
+LINE# LOC   CODE        LINE
+
+
+01542  1AA8  D0 03              BNE DLOOD       ;IF NOT GO ON.
+01543  1AAA  4C 54 14           JMP BREAK       ;BREAK ERROR
+01544  1AAD              ;*********************************
+01545  1AAD              ; ZERO DATA COUNTER
+01546  1AAD              ;*********************************
+01547  1AAD  A9 00       DLOOD  LDA #$00
+01548  1AAF  8D D4 17           STA DATCNT
+01549  1AB2              ;*********************************
+01550  1AB2              ; LOOP
+01551  1AB2              ;*********************************
+01552  1AB2  EA          RLOOD  NOP
+01553  1AB3  A2 08              LDX #$08        ;FILE #8
+01554  1AB5  20 C6 FF           JSR CHKIN       ;INPUT FILE
+01555  1AB8              ;*********************************
+01556  1AB8              ; READ IN DBYTE DATA
+01557  1AB8              ;*********************************
+01558  1AB8  20 CF FF           JSR CHRIN       ;DATA BYTE
+01559  1ABB  8D 9E 1A           STA CURDBY      ;STASH DATA BYTE
+01560  1ABE  20 B7 FF           JSR READST      ;READ STATUS
+01561  1AC1  8D D2 14           STA DSKSTA      ;STASH DISK STATUS
+01562  1AC4                     
+01563  1AC4  20 CF FF           JSR CHRIN       ;DATA BYTE
+01564  1AC7  8D 9F 1A           STA CURDBY+1    ;STASH DATA BYTE
+01565  1ACA  20 B7 FF           JSR READST      ;READ STATUS
+01566  1ACD  8D D3 14           STA DSKSTB      ;STASH DISK STATUS
+01567  1AD0              ;*********************************
+01568  1AD0              ; CHECK DATA DBYTE COUNT IF ZERO
+01569  1AD0              ; THEN PRINT .DBYTE DIRECTIVE
+01570  1AD0              ;*********************************
+01571  1AD0  AD D4 17           LDA DATCNT
+01572  1AD3  D0 1D              BNE SUBDYT
+01573  1AD5              ;*********************************
+01574  1AD5              ; PRINT DBYTE DIRECTIVE AND FIRST DBYTE
+01575  1AD5              ;*********************************
+01576  1AD5              ; CHECK SCREEN OUTPUT OPTIONS
+01577  1AD5              ; 0 = NO SCREEN
+01578  1AD5              ; 1 = SCREEN OUTPUT
+01579  1AD5              ;*********************************
+01580  1AD5  AD B2 15           LDA SCROPT
+01581  1AD8  D0 08              BNE PRTFI8
+01582  1ADA              ;*********************************
+01583  1ADA              ; SET OUTPUT CHANNEL TO SCREEN
+01584  1ADA              ;*********************************
+01585  1ADA  A2 03              LDX #$03        ;FILE #Y
+01586  1ADC  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01587  1ADF  20 6D 1B           JSR PRTDFD      ;PRINT DIRECTIVE
+01588  1AE2              ;*********************************
+01589  1AE2              ; SET OUTPUT CHANNEL TO ASM FILE
+01590  1AE2              ;*********************************
+01591  1AE2  A2 07       PRTFI8 LDX #$07        ;FILE #Y
+01592  1AE4  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01593  1AE7  20 6D 1B           JSR PRTDFD      ;PRINT DIRECTIVE
+01594  1AEA              ;*********************************
+01595  1AEA              ; SET OUTPUT CHANNEL TO SCREEN
+01596  1AEA              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0034
+
+LINE# LOC   CODE        LINE
+
+
+01597  1AEA  A2 03              LDX #$03        ;FILE #Y
+01598  1AEC  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01599  1AEF  B8                 CLV
+01600  1AF0  50 1A              BVC CHKDSD
+01601  1AF2              ;*********************************
+01602  1AF2              ; SUBSEQUENT DBYTES
+01603  1AF2              ;*********************************
+01604  1AF2              
+01605  1AF2              ;*********************************       
+01606  1AF2              ; CHECK SCREEN OUTPUT OPTIONS
+01607  1AF2              ; 0 = NO SCREEN
+01608  1AF2              ; 1 = SCREEN OUTPUT
+01609  1AF2              ;*********************************
+01610  1AF2  AD B2 15    SUBDYT LDA SCROPT
+01611  1AF5  D0 08              BNE PRTFI9
+01612  1AF7              ;*********************************
+01613  1AF7              ; SET OUTPUT CHANNEL TO SCREEN
+01614  1AF7              ;*********************************
+01615  1AF7  A2 03              LDX #$03        ;FILE #Y
+01616  1AF9  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01617  1AFC  20 86 1B           JSR PRTSD       ;PRINT DBYTE
+01618  1AFF              ;*********************************
+01619  1AFF              ; SET OUTPUT CHANNEL TO ASM FILE
+01620  1AFF              ;*********************************
+01621  1AFF  A2 07       PRTFI9 LDX #$07        ;FILE #Y
+01622  1B01  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01623  1B04  20 86 1B           JSR PRTSD       ;PRINT DBYTE
+01624  1B07              ;*********************************
+01625  1B07              ; SET OUTPUT CHANNEL TO SCREEN
+01626  1B07              ;*********************************
+01627  1B07  A2 03              LDX #$03        ;FILE #Y
+01628  1B09  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01629  1B0C              ;*********************************
+01630  1B0C              ; CHECK FOR DISK ERROR - LIKE END OF FILE
+01631  1B0C              ;*********************************
+01632  1B0C              CHKDSD=*
+01633  1B0C  AD D2 14           LDA DSKSTA      ;CHECK DISK STATUS
+01634  1B0F  0D D3 14           ORA DSKSTB      ;CHECK DISK STATUS
+01635  1B12  F0 03              BEQ CUROD       ;NEXT BYTE
+01636  1B14  4C 59 1B           JMP FOOTD       ;DONE PRINT FOOTER
+01637  1B17              ;*********************************
+01638  1B17              ; INCREMENT RECORD COUNT
+01639  1B17              ;*********************************
+01640  1B17  AE D4 17    CUROD  LDX DATCNT
+01641  1B1A  E8                 INX
+01642  1B1B  8E D4 17           STX DATCNT
+01643  1B1E              ;*********************************
+01644  1B1E              ; INCREMENT ADDRESS
+01645  1B1E              ;*********************************
+01646  1B1E  18                 CLC
+01647  1B1F  AD AC 15           LDA CUADD
+01648  1B22  69 02              ADC #$02
+01649  1B24  8D AC 15           STA CUADD
+01650  1B27  90 08              BCC IN5
+01651  1B29  AD AD 15           LDA CUADD+1
+
+
+
+
+
+
+PRG2BYTE......PAGE 0035
+
+LINE# LOC   CODE        LINE
+
+
+01652  1B2C  69 00              ADC #$00
+01653  1B2E  8D AD 15           STA CUADD+1
+01654  1B31              ;*********************************
+01655  1B31              ; CHECK FOR MAXIMUM $08 DBYTES
+01656  1B31              ;*********************************
+01657  1B31  AE D4 17    IN5    LDX DATCNT
+01658  1B34  EC D5 17           CPX DATLIM
+01659  1B37  F0 03              BEQ SRLOD
+01660  1B39  4C B2 1A           JMP RLOOD
+01661  1B3C              ;*********************************
+01662  1B3C              ; PRINT NEWLINE
+01663  1B3C              ;*********************************
+01664  1B3C              ; CHECK SCREEN OUTPUT OPTIONS
+01665  1B3C              ; 0 = NO SCREEN
+01666  1B3C              ; 1 = SCREEN OUTPUT
+01667  1B3C              ;*********************************
+01668  1B3C  AD B2 15    SRLOD  LDA SCROPT
+01669  1B3F  D0 08              BNE PRTFIA
+01670  1B41              ;*********************************
+01671  1B41              ; SET OUTPUT CHANNEL TO SCREEN
+01672  1B41              ;*********************************
+01673  1B41  A2 03              LDX #$03        ;FILE #Y
+01674  1B43  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01675  1B46  20 CF 17           JSR PRTCR       ;PRINT CR
+01676  1B49              ;*********************************
+01677  1B49              ; SET OUTPUT CHANNEL TO ASM FILE
+01678  1B49              ;*********************************
+01679  1B49  A2 07       PRTFIA LDX #$07        ;FILE #Y
+01680  1B4B  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01681  1B4E  20 CF 17           JSR PRTCR       ;PRINT CR
+01682  1B51              ;*********************************
+01683  1B51              ; SET OUTPUT CHANNEL TO SCREEN
+01684  1B51              ;*********************************
+01685  1B51  A2 03              LDX #$03        ;FILE #Y
+01686  1B53  20 C9 FF           JSR CHKOUT      ;SET TO OUTPUT
+01687  1B56              ;*********************************
+01688  1B56              ; NEXT DIRECTIVE LINE
+01689  1B56              ;*********************************
+01690  1B56  4C AD 1A           JMP DLOOD
+01691  1B59              ;*********************************
+01692  1B59              
+01693  1B59              ;*********************************
+01694  1B59              ;
+01695  1B59              ;*********************************
+01696  1B59              FOOTD=*
+01697  1B59              ;*********************************
+01698  1B59              ; INCREMENT ADDRESS BY 1 PAST LAST WORD
+01699  1B59              ;*********************************
+01700  1B59  18                 CLC
+01701  1B5A  AD AC 15           LDA CUADD
+01702  1B5D  69 01              ADC #$01
+01703  1B5F  8D AC 15           STA CUADD
+01704  1B62  90 08              BCC IN6
+01705  1B64  AD AD 15           LDA CUADD+1
+01706  1B67  69 00              ADC #$00
+
+
+
+
+
+
+PRG2BYTE......PAGE 0036
+
+LINE# LOC   CODE        LINE
+
+
+01707  1B69  8D AD 15           STA CUADD+1
+01708  1B6C              ;*********************************
+01709  1B6C              ;
+01710  1B6C              ;*********************************
+01711  1B6C  60          IN6    RTS
+01712  1B6D              ;*********************************
+01713  1B6D              ;
+01714  1B6D              ;*********************************
+01715  1B6D              
+01716  1B6D              ;*********************************
+01717  1B6D              ; PRINT DBYTE DIRECTIVE AND FIRST DBYTE
+01718  1B6D              ;*********************************
+01719  1B6D  20 A8 1B    PRTDFD JSR PRTDBY      ;PRINT ' .DBYTE '
+01720  1B70  20 DF 16           JSR PRTDOL      ;PRINT '$'
+01721  1B73  AD 9E 1A           LDA CURDBY      ;RETERIVE BYTE
+01722  1B76  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+01723  1B79  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+01724  1B7C                     
+01725  1B7C  AD 9F 1A           LDA CURDBY+1    ;RETERIVE BYTE
+01726  1B7F  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+01727  1B82  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+01728  1B85                     
+01729  1B85  60                 RTS
+01730  1B86              ;*********************************
+01731  1B86              ; SUBSEQUENT BYTES
+01732  1B86              ;*********************************
+01733  1B86  20 E4 16    PRTSD  JSR PRTCOM      ;PRINT ','
+01734  1B89  20 DF 16           JSR PRTDOL      ;PRINT '$'
+01735  1B8C  AD 9E 1A           LDA CURDBY      ;RETERIVE BYTE
+01736  1B8F  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+01737  1B92  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+01738  1B95                     
+01739  1B95  AD 9F 1A           LDA CURDBY+1    ;RETERIVE BYTE
+01740  1B98  20 3B 15           JSR CVTBYT      ;CONVERT BYTE
+01741  1B9B  20 5F 15           JSR PRTBYE      ;PRINT BYTE
+01742  1B9E                     
+01743  1B9E  60                 RTS
+01744  1B9F              ;*********************************
+01745  1B9F              ; PRINT ' .DBYTE '
+01746  1B9F              ;*********************************
+01747  1B9F  20 2E       MSDY   .BYTE ' .DBYTE '
+01748  1BA7  00                 .BYTE 0
+01749  1BA8              ;*********************************
+01750  1BA8              ; PRINT " .DBYTE "
+01751  1BA8              ;*********************************
+01752  1BA8  A9 9F       PRTDBY LDA #<MSDY      ;LOW BYTE MESSAGE
+01753  1BAA  A0 1B              LDY #>MSDY      ;HIGH BYTE MESSAGE
+01754  1BAC  4C 6A 17           JMP STRPNT      ;OUTPUT MESSAGE
+01755  1BAF              ;*********************************
+01756  1BAF              ; DBYTE DIRECTIVE
+01757  1BAF              ;*********************************
+01757  1BAF              ;
+01758  1BAF              ;*********************************
+01759  1BAF              ;
+01760  1BAF              ;*********************************
+
+
+
+
+
+
+PRG2BYTE......PAGE 0037
+
+LINE# LOC   CODE        LINE
+
+
+01761  1BAF              .END
+
+
+
+ERRORS = 00000
+
+
+SYMBOL TABLE
+
+SYMBOL VALUE
+ ADDCHP   14E4    ADDCHR   14E5    ADDHI    16BE    ADDLO    16BF
+ AOP3     1841    ASC      1854    BASIC    120D    BASICW   C474
+ BINARY   18F6    BREAK    1454    BSTUB    0001    BUF      190D
+ BYTCHR   1538    CHGASC   1555    CHKDSD   1B0C    CHKDSK   13E5
+ CHKDSW   19FC    CHKIN    FFC6    CHKOUT   FFC9    CHKSUM   16C1
+ CHRIN    FFCF    CHROUE   E742    CHROUT   FFD2    CKSTOP   1380
+ CLO1     1470    CLOSE    FFC3    CLRCHN   FFCC    CNSTN1   17C3
+ CNSTNP   17BB    COUNT    15B0    COUNT1   15B3    CRNO     1788
+ CRNO1    1795    CRYS     177B    CRYS1    1793    CUADD    15AC
+ CURBYT   15A7    CURDAT   16C0    CURDBY   1A9E    CUROD    1B17
+ CUROK    13EC    CUROW    1A07    CURWRD   198E    CVTADD   14EA
+ CVTBYT   153B    DATCNT   17D4    DATLIM   17D5    DIGIT1   1675
+ DIGIT2   1676    DIGIT3   1677    DIGIT4   1678    DIROPT   1839
+ DISERR   156E    DLOOA    1597    DLOOC    158F    DLOOD    1AAD
+ DLOOE    1583    DLOOP    1392    DLOOW    199D    DODBY    1AA0
+ DOWRD    1990    DSKSTA   14D2    DSKSTB   14D3    ENADD    15AE
+ ENDFIL   1461    FA       00BA    FOOT     142B    FOOTD    1B59
+ FOOTW    1A49    GETBYT   18D9    GETCNT   18C4    GETIN    FFE4
+ IDIROP   183A    IECIN    FFA5    IN1      1406    IN3      1A21
+ IN4      1A5C    IN5      1B31    IN6      1B6C    INEND    18D8
+ INENX    18F5    INIT     16B0    INITD    1236    INITOK   1258
+ INSTN1   1799    INSTN2   17A8    INSTN3   1921    INSTNG   191F
+ INSTNO   1797    INSTNP   17A6    LA       00B8    MSA1     192E
+ MSBY     16FA    MSCL     1709    MSDO     185B    MSDY     1B9F
+ MSG1     15B4    MSG10    1627    MSG11    1636    MSG12    163F
+ MSG13    1646    MSG14    1651    MSG15    165B    MSG16    1668
+ MSG2     15B6    MSG6     15BD    MSG7     15C8    MSG8     1608
+ MSG9     161D    MSS1     1734    MSST     16EE    MSWD     1A8F
+ NOHEX    1909    NOSIX    155C    NOTABS   189E    NUMBYT   15A6
+ OK2      138D    OPEN     FFC0    OPENPF   12CC    OUF      1679
+ PFILE0   12A0    PFILE1   12A2    PFILE2   1284    PFILE3   1286
+ PLOOP    1757    PRG2BY   1217    PRGOK    1301    PRHEAD   1483
+ PRINT    1754    PROGM    16B6    PRTADD   151B    PRTBYE   155F
+ PRTBYT   1702    PRTCML   172D    PRTCOM   16E4    PRTCR    17CF
+ PRTDBY   1BA8    PRTDFB   14A9    PRTDFD   1B6D    PRTDFW   1A5D
+ PRTDOL   16DF    PRTFI1   13BB    PRTFI2   13D8    PRTFI3   1444
+ PRTFI4   141B    PRTFI5   19D2    PRTFI6   19EF    PRTFI7   1A39
+ PRTFI8   1AE2    PRTFI9   1AFF    PRTFIA   1B49    PRTFIL   1358
+ PRTFTA   14B9    PRTORG   16F3    PRTPC    16CB    PRTSB    14D4
+ PRTSD    1B86    PRTSEM   16DA    PRTSPA   16D5    PRTSPC   16E9
+ PRTSW    1A76    PRTWRD   1A97    PRTXX    16C3    PUF      168B
+ QUITER   146B    READST   FFB7    RECBUF   17D9    RECCNT   17D6
+ RECHI    16BC    RECLO    16BD    RECORD   15A8    RECPNT   17D8
+ RIGHT    14FA    RLOOD    1AB2    RLOOP    1397    RLOOW    19A2
+ SA       00B9    SAVO     16BA    SAVP     16BB    SCROLY   900F
+
+
+
+
+
+
+
+
+SYMBOL TABLE
+
+SYMBOL VALUE
+ SCROPT   15B2    SETDEF   18B2    SETLFS   FFBA    SETMAX   18B8
+ SETMIN   18BE    SETMSG   FF90    SETNAM   FFBD    SEXIT    177A
+ SNUM     16AF    SOP1     12C7    SOUT     1770    SRCM     16B2
+ SRCOK    131F    SRLOD    1B3C    SRLOP    140E    SRLOW    1A2C
+ STADD    15AA    START    1212    STATUS   0090    STOP     FFE1
+ STRPNT   176A    SUBBYT   13CB    SUBDYT   1AF2    SUBWRD   19E2
+ SUF      169D    TALK     FFB4    TALKSA   FF96    TEMP     15B1
+ UNTALK   FFAB    WEDODB   137A    WEDOWD   1374    YSHEX    190B
+ ZEROUR   0002   
+
+END OF ASSEMBLY
+BPRG2BYTENL.ASM......PAGE 0001
+
+LINE# LOC   CODE        LINE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PRG2BYTE......PAGE 0002
+
+LINE# LOC   CODE        LINE
+
+
+00067  1217              .FIL   PRG2BYTE.ASM
+01291  198E              .LIB   DOWORD.ASM
+01522  1A9E              ;
+01526  1A9E              .LIB   DODBY.ASM
+01757  1BAF              ;
+
+ERRORS = 00000
+
+
+SYMBOL TABLE
+
+SYMBOL VALUE
+ ADDCHP   14E4    ADDCHR   14E5    ADDHI    16BE    ADDLO    16BF
+ AOP3     1841    ASC      1854    BASIC    120D    BASICW   C474
+ BINARY   18F6    BREAK    1454    BSTUB    0001    BUF      190D
+ BYTCHR   1538    CHGASC   1555    CHKDSD   1B0C    CHKDSK   13E5
+ CHKDSW   19FC    CHKIN    FFC6    CHKOUT   FFC9    CHKSUM   16C1
+ CHRIN    FFCF    CHROUE   E742    CHROUT   FFD2    CKSTOP   1380
+ CLO1     1470    CLOSE    FFC3    CLRCHN   FFCC    CNSTN1   17C3
+ CNSTNP   17BB    COUNT    15B0    COUNT1   15B3    CRNO     1788
+ CRNO1    1795    CRYS     177B    CRYS1    1793    CUADD    15AC
+ CURBYT   15A7    CURDAT   16C0    CURDBY   1A9E    CUROD    1B17
+ CUROK    13EC    CUROW    1A07    CURWRD   198E    CVTADD   14EA
+ CVTBYT   153B    DATCNT   17D4    DATLIM   17D5    DIGIT1   1675
+ DIGIT2   1676    DIGIT3   1677    DIGIT4   1678    DIROPT   1839
+ DISERR   156E    DLOOA    1597    DLOOC    158F    DLOOD    1AAD
+ DLOOE    1583    DLOOP    1392    DLOOW    199D    DODBY    1AA0
+ DOWRD    1990    DSKSTA   14D2    DSKSTB   14D3    ENADD    15AE
+ ENDFIL   1461    FA       00BA    FOOT     142B    FOOTD    1B59
+ FOOTW    1A49    GETBYT   18D9    GETCNT   18C4    GETIN    FFE4
+ IDIROP   183A    IECIN    FFA5    IN1      1406    IN3      1A21
+ IN4      1A5C    IN5      1B31    IN6      1B6C    INEND    18D8
+ INENX    18F5    INIT     16B0    INITD    1236    INITOK   1258
+ INSTN1   1799    INSTN2   17A8    INSTN3   1921    INSTNG   191F
+ INSTNO   1797    INSTNP   17A6    LA       00B8    MSA1     192E
+ MSBY     16FA    MSCL     1709    MSDO     185B    MSDY     1B9F
+ MSG1     15B4    MSG10    1627    MSG11    1636    MSG12    163F
+ MSG13    1646    MSG14    1651    MSG15    165B    MSG16    1668
+ MSG2     15B6    MSG6     15BD    MSG7     15C8    MSG8     1608
+ MSG9     161D    MSS1     1734    MSST     16EE    MSWD     1A8F
+ NOHEX    1909    NOSIX    155C    NOTABS   189E    NUMBYT   15A6
+ OK2      138D    OPEN     FFC0    OPENPF   12CC    OUF      1679
+ PFILE0   12A0    PFILE1   12A2    PFILE2   1284    PFILE3   1286
+ PLOOP    1757    PRG2BY   1217    PRGOK    1301    PRHEAD   1483
+ PRINT    1754    PROGM    16B6    PRTADD   151B    PRTBYE   155F
+ PRTBYT   1702    PRTCML   172D    PRTCOM   16E4    PRTCR    17CF
+ PRTDBY   1BA8    PRTDFB   14A9    PRTDFD   1B6D    PRTDFW   1A5D
+ PRTDOL   16DF    PRTFI1   13BB    PRTFI2   13D8    PRTFI3   1444
+ PRTFI4   141B    PRTFI5   19D2    PRTFI6   19EF    PRTFI7   1A39
+ PRTFI8   1AE2    PRTFI9   1AFF    PRTFIA   1B49    PRTFIL   1358
+ PRTFTA   14B9    PRTORG   16F3    PRTPC    16CB    PRTSB    14D4
+ PRTSD    1B86    PRTSEM   16DA    PRTSPA   16D5    PRTSPC   16E9
+ PRTSW    1A76    PRTWRD   1A97    PRTXX    16C3    PUF      168B
+ QUITER   146B    READST   FFB7    RECBUF   17D9    RECCNT   17D6
+ RECHI    16BC    RECLO    16BD    RECORD   15A8    RECPNT   17D8
+
+
+
+
+
+
+
+
+SYMBOL TABLE
+
+SYMBOL VALUE
+ RIGHT    14FA    RLOOD    1AB2    RLOOP    1397    RLOOW    19A2
+ SA       00B9    SAVO     16BA    SAVP     16BB    SCROLY   900F
+ SCROPT   15B2    SETDEF   18B2    SETLFS   FFBA    SETMAX   18B8
+ SETMIN   18BE    SETMSG   FF90    SETNAM   FFBD    SEXIT    177A
+ SNUM     16AF    SOP1     12C7    SOUT     1770    SRCM     16B2
+ SRCOK    131F    SRLOD    1B3C    SRLOP    140E    SRLOW    1A2C
+ STADD    15AA    START    1212    STATUS   0090    STOP     FFE1
+ STRPNT   176A    SUBBYT   13CB    SUBDYT   1AF2    SUBWRD   19E2
+ SUF      169D    TALK     FFB4    TALKSA   FF96    TEMP     15B1
+ UNTALK   FFAB    WEDODB   137A    WEDOWD   1374    YSHEX    190B
+ ZEROUR   0002   
+
+END OF ASSEMBLY
+
+CROSS REFERENCE......PAGE    1
+
+
+  ADDCHP $14E4   709   714   736   742
+  ADDCHR $14E5   710   737   740   748   751   754   757
+  ADDHI  $16BE   309   318   562   717   926
+  ADDLO  $16BF   307   313   560   715   927
+  AOP3   $1841  1146  1147  1154
+  ASC    $1854  1149  1151  1153  1155
+  BASIC  $120D    30    35
+* BASICW $C474    42
+  BINARY $18F6  1223  1228  1239
+  BREAK  $1454   380   599  1308  1543
+  BSTUB  $0001     9    28
+  BUF    $190D  1222  1227  1256  1264
+  BYTCHR $1538   762   779   782   797   800
+  CHGASC $1555   726   730   769   773   787
+  CHKDSD $1B0C  1600  1632
+  CHKDSK $13E5   441   473
+  CHKDSW $19FC  1365  1397
+  CHKIN  $FFC6   102   298   377   386   397  1305  1319  1540  1554
+  CHKOUT $FFC9   103   159   335   341   347   427   433   439   457   463
+
+                 469   523   529   535   576   582   588   604   619   633
+
+                1351  1357  1363  1381  1387  1393  1439  1445  1451  1586
+
+                1592  1598  1616  1622  1628  1674  1680  1686
+  CHKSUM $16C1   124   125   931
+  CHRIN  $FFCF   105   306   308   404  1044  1053  1066  1077  1263  1323
+
+                1328  1558  1563
+* CHROUE $E742    43
+  CHROUT $FFD2   106   749   752   755   758   798   801   826   828   936
+
+                 937   942   944   949   954   959   964   969  1020  1035
+
+                1104  1155
+  CKSTOP $1380   353   375
+  CLO1   $1470   610   637
+  CLOSE  $FFC3   101   140   639   641   643
+  CLRCHN $FFCC   104   115   644
+  CNSTN1 $17C3  1094  1097  1098
+* CNSTNP $17BB  1089
+  COUNT  $15B0   843  1015  1016  1021
+* COUNT1 $15B3   847
+  CRNO   $1788   222  1053
+  CRNO1  $1795  1049  1055  1057  1060
+* CRYS   $177B  1044
+  CRYS1  $1793  1046  1048  1058
+  CUADD  $15AC   315   320   489   491   493   495   559   561   841  1412
+
+                1414  1416  1418  1466  1468  1470  1472  1647  1649  1651
+
+                1653  1701  1703  1705  1707
+  CURBYT $15A7   405   676   702   838
+* CURDAT $16C0   929
+  CURDBY $1A9E  1530  1559  1564  1721  1725  1735  1739
+  CUROD  $1B17  1635  1640
+  CUROK  $13EC   476   481
+  CUROW  $1A07  1400  1405
+  CURWRD $198E  1295  1324  1329  1486  1490  1500  1504
+  CVTADD $14EA   666   685   712
+  CVTBYT $153B   677   703   764  1487  1491  1501  1505  1722  1726  1736
+
+                1740
+  DATCNT $17D4   391   412   482   484  1108  1313  1336  1405  1407  1422
+
+                1548  1571  1640  1642  1657
+
+
+
+
+
+
+
+CROSS REFERENCE......PAGE    2
+
+
+  DATLIM $17D5   501  1112  1182  1192  1195  1198  1204  1213  1423  1658
+
+* DIGIT1 $1675   888
+* DIGIT2 $1676   889
+* DIGIT3 $1677   890
+* DIGIT4 $1678   891
+  DIROPT $1839   241   351  1138  1156
+  DISERR $156E   141   271   290   805
+  DLOOA  $1597   827   830
+  DLOOC  $158F   813   823
+  DLOOD  $1AAD  1542  1547  1690
+  DLOOE  $1583   814   816
+  DLOOP  $1392   390   539
+  DLOOW  $199D  1307  1312  1455
+  DODBY  $1AA0   369  1534
+  DOWRD  $1990   362  1299
+  DSKSTA $14D2   407   475   695  1326  1398  1561  1633
+  DSKSTB $14D3   696  1331  1399  1566  1634
+  ENADD  $15AE   316   321   842
+  ENDFIL $1461   589   614
+  FA     $00BA    87   806
+  FOOT   $142B   363   370   477   543
+  FOOTD  $1B59  1636  1696
+  FOOTW  $1A49  1401  1461
+  GETBYT $18D9  1211  1222
+  GETCNT $18C4  1181  1203
+  GETIN  $FFE4   107  1146
+  IDIROP $183A   242  1142
+  IECIN  $FFA5    94   811   814   827
+  IN1    $1406   492   496
+  IN3    $1A21  1415  1422
+  IN4    $1A5C  1469  1476
+  IN5    $1B31  1650  1657
+  IN6    $1B6C  1704  1711
+  INEND  $18D8  1207  1214
+  INENX  $18F5  1226  1235
+  INIT   $16B0   131   132   914
+* INITD  $1236   129
+  INITOK $1258   142   147
+  INSTN1 $1799  1066  1070
+  INSTN2 $17A8  1077  1082
+  INSTN3 $1921  1263  1267
+  INSTNG $191F  1205  1262
+  INSTNO $1797   200  1065
+  INSTNP $17A6   173  1076
+* LA     $00B8    85
+  MSA1   $192E  1178  1179  1273
+  MSBY   $16FA   984   989   990
+  MSCL   $1709   995  1001  1002
+  MSDO   $185B  1143  1144  1161
+  MSDY   $1B9F  1747  1752  1753
+  MSG1   $15B4   163   168   195   608   623   851  1017
+* MSG10  $1627   871
+* MSG11  $1636   873
+* MSG12  $163F   875
+* MSG13  $1646   877
+* MSG14  $1651   879
+
+
+
+
+
+
+
+CROSS REFERENCE......PAGE    3
+
+
+  MSG15  $165B   623   881
+* MSG16  $1668   883
+  MSG2   $15B6   608   852
+* MSG6   $15BD   854
+  MSG7   $15C8   163   859
+  MSG8   $1608   195   865
+  MSG9   $161D   168   869
+  MSS1   $1734   219   220  1007
+  MSST   $16EE   973   978   979
+  MSWD   $1A8F  1512  1517  1518
+  NOHEX  $1909  1241  1246  1249
+  NOSIX  $155C   789   791
+  NOTABS $189E   251  1178
+* NUMBYT $15A6   837
+  OK2    $138D   379   384
+  OPEN   $FFC0   100   138   157   269   288
+  OPENPF $12CC   226   232
+  OUF    $1679   206   284   285   895  1067
+* PFILE0 $12A0   204
+  PFILE1 $12A2   205   210
+* PFILE2 $1284   180
+  PFILE3 $1286   181   186
+  PLOOP  $1757  1016  1023
+* PRG2BY $1217   114
+  PRGOK  $1301   272   277
+  PRHEAD $1483   336   342   654
+  PRINT  $1754   164   169   196   609   624  1015
+  PROGM  $16B6   181   918
+  PRTADD $151B   667   687   747
+  PRTBYE $155F   678   704   796  1488  1492  1502  1506  1723  1727  1737
+
+                1741
+  PRTBYT $1702   674   989
+  PRTCML $172D   654   664   669   684   690  1001
+  PRTCOM $16E4   700   963  1498  1733
+  PRTCR  $17CF   191   215   236   246   255   302   524   530   660   668
+
+                 683   689   824  1103  1440  1446  1675  1681
+  PRTDBY $1BA8  1719  1752
+  PRTDFB $14A9   428   434   674
+  PRTDFD $1B6D  1587  1593  1719
+  PRTDFW $1A5D  1352  1358  1484
+  PRTDOL $16DF   675   701   958  1485  1499  1720  1734
+  PRTFI1 $13BB   422   432
+  PRTFI2 $13D8   452   462
+  PRTFI3 $1444   571   581
+  PRTFI4 $141B   518   528
+  PRTFI5 $19D2  1346  1356
+  PRTFI6 $19EF  1376  1386
+  PRTFI7 $1A39  1434  1444
+  PRTFI8 $1AE2  1581  1591
+  PRTFI9 $1AFF  1611  1621
+  PRTFIA $1B49  1669  1679
+  PRTFIL $1358   330   340
+  PRTFTA $14B9   577   583   683
+  PRTORG $16F3   665   978
+  PRTPC  $16CB   688   941
+  PRTSB  $14D4   458   464   700
+
+
+
+
+
+
+
+CROSS REFERENCE......PAGE    4
+
+
+  PRTSD  $1B86  1617  1623  1733
+  PRTSEM $16DA   655   953
+  PRTSPA $16D5   656   948
+* PRTSPC $16E9   968
+  PRTSW  $1A76  1382  1388  1498
+  PRTWRD $1A97  1484  1517
+  PRTXX  $16C3   686   935
+  PUF    $168B   182   266   267   901  1078  1094
+  QUITER $146B   143   273   292   628
+  READST $FFB7   108   406  1325  1330  1560  1565
+* RECBUF $17D9  1118
+* RECCNT $17D6  1116
+  RECHI  $16BC   122   923
+  RECLO  $16BD   123   924
+  RECORD $15A8   117   118   839
+* RECPNT $17D8  1117
+  RIGHT  $14FA   718   721
+  RLOOD  $1AB2  1552  1660
+  RLOOP  $1397   395   503
+  RLOOW  $19A2  1317  1425
+  SA     $00B9    86   809
+  SAVO   $16BA   211   283   920
+  SAVP   $16BB   187   265   921
+* SCROLY $900F    44
+  SCROPT $15B2   121   225   228   329   421   451   517   570   845  1345
+
+                1375  1433  1580  1610  1668
+  SETDEF $18B2   250  1191
+  SETLFS $FFBA    98   137   151   263   281
+  SETMAX $18B8  1186  1194
+  SETMIN $18BE  1183  1197
+  SETMSG $FF90    60    63
+  SETNAM $FFBD    99   133   156   268   286
+  SEXIT  $177A  1034  1038
+  SNUM   $16AF   910  1084
+  SOP1   $12C7   223   227
+  SOUT   $1770  1033  1037
+  SRCM   $16B2   205   916
+  SRCOK  $131F   291   296
+  SRLOD  $1B3C  1659  1668
+  SRLOP  $140E   502   517
+  SRLOW  $1A2C  1424  1433
+  STADD  $15AA   119   314   319   840
+  START  $1212    51    62
+  STATUS $0090    84   120
+  STOP   $FFE1    96   378  1306  1541
+  STRPNT $176A   221   659   980   991  1003  1030  1145  1180  1519  1754
+
+  SUBBYT $13CB   413   445
+  SUBDYT $1AF2  1572  1610
+  SUBWRD $19E2  1337  1375
+  SUF    $169D   176   657   658   907  1079  1092  1095
+  TALK   $FFB4    97   807
+  TALKSA $FF96    93   810
+  TEMP   $15B1   844  1212  1224  1233  1234
+  UNTALK $FFAB    95   817   831
+  WEDODB $137A   357   368
+  WEDOWD $1374   355   361
+
+
+
+
+
+
+
+CROSS REFERENCE......PAGE    5
+
+
+  YSHEX  $190B  1243  1248  1251
+  ZEROUR $0002    89  1030  1031  1033
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
