@@ -1,0 +1,14 @@
+
+C:\My Commodore\Commodore Software Development\Commodore VIC 20 MADS Projects\Compare20tass>64tass bcompare.asm -L bcompare.lst -o bcompare.prg  
+64tass Turbo Assembler Macro V1.53.1515
+64TASS comes with ABSOLUTELY NO WARRANTY; This is free software, and you
+are welcome to redistribute it under certain conditions; See LICENSE!
+
+Assembling file:   bcompare.asm
+Assembling file:   compare.asm
+Error messages:    None
+Warning messages:  None
+Passes:            3
+Memory range:      $1201-$1719   $0519
+
+C:\My Commodore\Commodore Software Development\Commodore VIC 20 MADS Projects\Compare20tass>rem pause 
